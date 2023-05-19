@@ -1,0 +1,9 @@
+C:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto/build/CMakeFiles/Experimental.dir
+C:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto/build/CMakeFiles/Nightly.dir
+C:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto/build/CMakeFiles/Continuous.dir
+C:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto/build/CMakeFiles/NightlyMemoryCheck.dir
+C:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto/build/CMakeFiles/AED_Proyecto.dir
+C:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto/build/CMakeFiles/PACKAGE.dir
+C:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto/build/CMakeFiles/RUN_TESTS.dir
+C:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto/build/CMakeFiles/ZERO_CHECK.dir
