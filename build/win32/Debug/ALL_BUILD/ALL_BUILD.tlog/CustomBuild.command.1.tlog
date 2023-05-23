@@ -1,0 +1,10 @@
+^C:\USERS\JOSEW\DESKTOP\UTEC\5TO CICLO - 2023.1\ALGORITMOS Y ESTRUCTURAS DE DATOS\AED_GRUPO3_PROYECTO\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto" "-BC:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto/build" --check-stamp-file "C:/Users/josew/Desktop/utec/5to Ciclo - 2023.1/Algoritmos y Estructuras de Datos/AED_Grupo3_Proyecto/build/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

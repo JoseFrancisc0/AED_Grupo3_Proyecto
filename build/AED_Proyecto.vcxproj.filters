@@ -6,9 +6,20 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="C:\Users\josew\Desktop\utec\5to Ciclo - 2023.1\Algoritmos y Estructuras de Datos\AED_Grupo3_Proyecto\transaction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\josew\Desktop\utec\5to Ciclo - 2023.1\Algoritmos y Estructuras de Datos\AED_Grupo3_Proyecto\block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
     <CustomBuild Include="C:\Users\josew\Desktop\utec\5to Ciclo - 2023.1\Algoritmos y Estructuras de Datos\AED_Grupo3_Proyecto\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{6B89C774-1AD0-3C0C-B8C7-919D9B60EC6B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{1FE377CC-9DE0-32C2-9C7D-EDC99EDFF54D}</UniqueIdentifier>
     </Filter>
