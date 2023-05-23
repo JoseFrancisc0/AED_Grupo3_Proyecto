@@ -2,30 +2,38 @@
 #define TRANSACTION_H
 
 #include <string>
+#include <ctime>
 using namespace std;
 
 class Transaction{
     private:
-        string sender;
-        string recipient;
+        string client;
+        string location;
         double amount;
+        time_t date;
     public:
-        Transaction(string _sender, string _recipient, double _amount):
-            sender(_sender),
-            recipient(_recipient),
+        Transaction(string _client, string _location, double _amount):
+            client(_client),
+            location(_location),
             amount(_amount)
-        {}
-
-        string getSender() const{
-            return sender;
+        {
+            date = time(nullptr);
         }
 
-        string getRecipient() const{
-            return recipient;
+        string getClient() const{
+            return client;
+        }
+
+        string getLocation() const{
+            return location;
         }
 
         double getAmount() const{
             return amount;
+        }
+
+        time_t getDate() const{
+            return date;
         }
 
         ~Transaction() = default;

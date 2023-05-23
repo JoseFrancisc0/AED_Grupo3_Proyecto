@@ -9,15 +9,19 @@ using namespace std;
 class Block{
     private:
         Transaction transaction;
-        string blockhash;
+        string blockHash;
         string prevHash;
     public:
-        Block(Transaction _transaction, string _prevHash): transaction(_transaction), prevHash(_prevHash){
-            blockhash = calculateHash();
+        Block(Transaction _transaction, string _prevHash):
+            transaction(_transaction),
+            prevHash(_prevHash)
+        {
+            blockHash = calculateHash();
         }
 
         string calculateHash() const{
-            string data = transaction.getSender() + transaction.getRecipient() + to_string(transaction.getAmount()) + prevHash;
+            string data = transaction.getClient() + transaction.getLocation() + to_string(transaction.getAmount()) +
+                    to_string(transaction.getDate()) + prevHash;
             unsigned char hash[SHA256_DIGEST_LENGTH];
             SHA256_CTX sha256;
             SHA256_Init(&sha256);
@@ -26,6 +30,14 @@ class Block{
 
             string hashString(reinterpret_cast<const char*>(hash), SHA256_DIGEST_LENGTH);
             return hashString;
+        }
+
+        string getBlockhash() const{
+            return blockHash;
+        }
+
+        string getPrevhash() const{
+            return prevHash;
         }
 
         ~Block() = default;
