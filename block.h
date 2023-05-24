@@ -12,10 +12,7 @@ class Block{
         string blockHash;
         string prevHash;
     public:
-        Block(Transaction _transaction, string _prevHash):
-            transaction(_transaction),
-            prevHash(_prevHash)
-        {
+        Block(Transaction _transaction, string _prevHash): transaction(_transaction), prevHash(_prevHash){
             blockHash = calculateHash();
         }
 
@@ -38,6 +35,10 @@ class Block{
 
         string getPrevhash() const{
             return prevHash;
+        }
+
+        Transaction getTransaction() const{
+            return transaction;
         }
 
         ~Block() = default;

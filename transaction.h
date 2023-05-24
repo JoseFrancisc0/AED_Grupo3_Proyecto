@@ -12,11 +12,7 @@ class Transaction{
         double amount;
         time_t date;
     public:
-        Transaction(string _client, string _location, double _amount):
-            client(_client),
-            location(_location),
-            amount(_amount)
-        {
+        Transaction(string _client, string _location, double _amount): client(_client), location(_location), amount(_amount){
             date = time(nullptr);
         }
 
