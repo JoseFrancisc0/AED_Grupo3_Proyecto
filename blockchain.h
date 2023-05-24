@@ -27,8 +27,25 @@ class BlockChain{
                 delete temp;
             }
         }
+        /// Inserta transacciones
+        void addTransaction(Transaction _transaction){
+            if(head == nullptr){ /// Blockchain vacia : bloque genesis
+                Block newBlock(_transaction, "");
+                Node* newNode = new Node(newBlock);
+                head = newNode;
+            }
+            else{ /// Insertar bloque al final
+                Block newBlock(_transaction, head->block.getPrevhash());
+                Node* newNode = new Node(newBlock);
 
-        void addTransaction(Transaction _transaction); /// Inserta transacciones
+                Node* temp = head;
+                while(temp->next != nullptr)
+                    temp = temp->next;
+
+                temp->next = newNode;
+            }
+        }
+
         int getTransactionCount(); /// El nro de transacciones (y de bloques)
         Block getLatestBlock(); /// El bloque mas reciente
         Block getBlockByIndex(); /// Busca por indice
