@@ -48,7 +48,7 @@ class BlockChain {
         }
 
         /// El nro de transacciones (y de bloques)
-        int getTransactionCount(){
+        int getBlockCount(){
             int count = 0;
             if(head == nullptr)
                 return count;
