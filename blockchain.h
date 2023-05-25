@@ -73,12 +73,28 @@ class BlockChain {
 
             return current->block;
         }
-        Block getBlockByIndex(); /// Busca por indice
-        Block search(int key); /// Equal to X
-        vector<Block> range_search(int begin, int end); /// Between X and Y
+
+        Block search(int key); /// Equal to X: Hash Table
+        vector<Block> range_search(int begin, int end); /// Between X and Y: AVL Tree
         void cascadeRecalculation(); /// Recalculo en cascada
         Block deleteRecordatIndex(int key); /// Elimina registros por indice
-        bool validateBlockchain(); /// Validacion de la blockchain
+
+        /// Validacion de la blockchain
+        bool validateBlockchain(){
+            Node* current = head;
+            while(current->next != nullptr){
+                if(current->block.getBlockhash() != current->block.calculateHash()) /// Check current hash validity
+                    return false;
+
+                if(current->block.getBlockhash() != current->block.getPrevhash()) /// Check previous hash validity
+                    return false;
+
+                current = current->next;
+            }
+
+            return true;
+        }
+
         void loadFromTextfile(); /// Carga de datos por csv
 };
 
