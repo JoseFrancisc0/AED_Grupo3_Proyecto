@@ -5,48 +5,62 @@
 #include <vector>
 using namespace std;
 
-class BlockChain{
+class BlockChain {
     private:
-        struct Node{
+        struct Node {
             Block block;
-            Node* next = nullptr;
+            Node *next = nullptr;
 
-            Node(Block _block) : block(_block){};
+            Node(Block _block) : block(_block) {};
         };
 
-        Node* head = nullptr;
+        Node *head = nullptr;
 
     public:
         BlockChain() = default;
 
-        ~BlockChain(){
-            Node* current = head;
-            while(current != nullptr){
-                Node* temp = current;
+        ~BlockChain() {
+            Node *current = head;
+            while (current != nullptr) {
+                Node *temp = current;
                 current = current->next;
                 delete temp;
             }
         }
-        /// Inserta transacciones
-        void addTransaction(Transaction _transaction){
-            if(head == nullptr){ /// Blockchain vacia : bloque genesis
-                Block newBlock(_transaction, "");
-                Node* newNode = new Node(newBlock);
-                head = newNode;
-            }
-            else{ /// Insertar bloque al final
-                Block newBlock(_transaction, head->block.getPrevhash());
-                Node* newNode = new Node(newBlock);
 
-                Node* temp = head;
-                while(temp->next != nullptr)
+        /// Inserta transacciones
+        void addTransaction(Transaction _transaction) {
+            if (head == nullptr) { /// Blockchain vacia : bloque genesis
+                Block newBlock(_transaction, "");
+                Node *newNode = new Node(newBlock);
+                head = newNode;
+            } else { /// Insertar bloque al final
+                Block newBlock(_transaction, head->block.getPrevhash());
+                Node *newNode = new Node(newBlock);
+
+                Node *temp = head;
+                while (temp->next != nullptr)
                     temp = temp->next;
 
                 temp->next = newNode;
             }
         }
 
-        int getTransactionCount(); /// El nro de transacciones (y de bloques)
+        /// El nro de transacciones (y de bloques)
+        int getTransactionCount(){
+            int count = 0;
+            if(head == nullptr)
+                return count;
+
+            Node* current = head;
+            while(current->next = nullptr){
+                count++;
+                current = current->next;
+            }
+
+            return count;
+        }
+
         Block getLatestBlock(); /// El bloque mas reciente
         Block getBlockByIndex(); /// Busca por indice
         Block search(int key); /// Equal to X
