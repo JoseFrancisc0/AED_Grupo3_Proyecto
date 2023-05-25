@@ -3,6 +3,7 @@
 
 #include "block.h"
 #include <vector>
+#include <stdexcept>
 using namespace std;
 
 class BlockChain {
@@ -53,7 +54,7 @@ class BlockChain {
                 return count;
 
             Node* current = head;
-            while(current->next = nullptr){
+            while(current->next != nullptr){
                 count++;
                 current = current->next;
             }
@@ -61,7 +62,17 @@ class BlockChain {
             return count;
         }
 
-        Block getLatestBlock(); /// El bloque mas reciente
+        /// El bloque mas reciente
+        Block getLatestBlock(){
+            if(head == nullptr)
+                throw std::out_of_range("BlockChain is empty.");
+
+            Node* current = head;
+            while(current->next != nullptr)
+                current = current->next;
+
+            return current->block;
+        }
         Block getBlockByIndex(); /// Busca por indice
         Block search(int key); /// Equal to X
         vector<Block> range_search(int begin, int end); /// Between X and Y
