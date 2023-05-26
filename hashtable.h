@@ -1,6 +1,7 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
+#include <iostream>
 #include <vector>
 #include <stdexcept>
 using namespace std;
@@ -19,20 +20,28 @@ class HashTable{
 
         void rehash() {
             int oldCap = capacity;
-            vector<pair<TK,TV>> oldTable = table;
+            vector<pair<TK,TV>> oldTable = std::move(table);
             capacity *= 2;
             table.assign(capacity, make_pair(TK(),TV()));
 
             for(size_t i=0; i<oldCap; i++)
                 if(oldTable[i].first != TK())
                     insert(oldTable[i].first, oldTable[i].second);
+
+            cout << "RESIZING" << endl;
+            this->print();
+            cout << '\n';
         }
 
         size_t findIndex(TK key){
             size_t index = hashCode(key);
+            size_t startIndex = index;
 
-            while(table[index].first != TK() && table[index].first != key)
+            while(table[index].first != TK() && table[index].first != key) {
                 index = (index + 1) % capacity;
+                if(index == startIndex)
+                    throw std::runtime_error("Hash Table is full");
+            }
 
             return index;
         }
@@ -43,12 +52,12 @@ class HashTable{
         }
 
         void insert(TK key, TV value) {
-            if( size*maxFillFactor >= capacity)
+            if((double) size/capacity > maxFillFactor)
                 rehash();
 
             size_t index = findIndex(key);
 
-            if(table[index].first != -1)
+            if(table[index].first == TK())
                 size++;
 
             table[index] = make_pair(key,value);
