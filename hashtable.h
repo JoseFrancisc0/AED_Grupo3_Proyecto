@@ -16,11 +16,31 @@ class HashTable{
             return hash<TK>{}(key) % capacity;
         }
 
-        void rehash();
-        int openAddressing();
+        void rehash() {
+            capacity *= 2;
+            size = 0;
+            vector<pair<TK, TV>> newTable(capacity);
+            table.swap(newTable);
+
+            for (const auto &item: newTable)
+                if (item.first != TK{})
+                    insert(item.first, item.second);
+        }
+
+        int openAddressing(TK& key, int index){
+            int i = 1;
+            while(table[index].first != TK{} && table[index].first != key){
+                index = (index + i*i) % capacity;
+                i++;
+            }
+            return index;
+        }
 
     public:
         HashTable() = default;
+
+        void insert(TK key, TV value);
+        void remove(TK key);
         ~HashTable() = default;
 };
 
