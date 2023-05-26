@@ -2,6 +2,7 @@
 #define HASHTABLE_H
 
 #include <vector>
+#include <stdexcept>
 using namespace std;
 
 template<typename TK, typename TV>
@@ -60,6 +61,16 @@ class HashTable{
                 table[index].first = TK{};
                 size--;
             }
+        }
+
+        TV find(const TK& key) const {
+            size_t index = hashCode(key);
+            index = openAddressing(key, index);
+
+            if(table[index].first == key)
+                return table[index].second;
+
+            throw std::out_of_range("Key not found in the hash table");
         }
 
         ~HashTable() = default;
