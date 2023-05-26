@@ -14,63 +14,53 @@ class HashTable{
         vector<pair<TK,TV>> table;
 
         size_t hashCode(TK key){
-            return hash<TK>{}(key) % capacity;
+            return std::hash<TK>{}(key) % capacity;
         }
 
         void rehash() {
+            int oldCap = capacity;
+            vector<pair<TK,TV>> oldTable = table;
             capacity *= 2;
-            size = 0;
-            vector<pair<TK, TV>> newTable(capacity);
-            table.swap(newTable);
+            table.assign(capacity, make_pair(TK(),TV()));
 
-            for (const auto &item: newTable)
-                if (item.first != TK{})
-                    insert(item.first, item.second);
+            for(size_t i=0; i<oldCap; i++)
+                if(oldTable[i].first != TK())
+                    insert(oldTable[i].first, oldTable[i].second);
         }
 
-        size_t openAddressing(TK& key, size_t index){
-            int i = 1;
-            while(table[index].first != TK{} && table[index].first != key){
-                index = (index + i*i) % capacity;
-                i++;
-            }
+        size_t findIndex(TK key){
+            size_t index = hashCode(key);
+
+            while(table[index].first != TK() && table[index].first != key)
+                index = (index + 1) % capacity;
+
             return index;
         }
 
     public:
-        HashTable() = default;
+        HashTable(){
+            table = vector<pair<TK,TV>>(capacity, make_pair(TK(),TV()));
+        }
 
         void insert(TK key, TV value) {
-            if(size*maxFillFactor >= capacity)
+            if( size*maxFillFactor >= capacity)
                 rehash();
 
-            size_t index = hashCode(key);
-            index = openAddressing(key, index);
+            size_t index = findIndex(key);
 
-            if(table[index].first == TK{})
+            if(table[index].first != -1)
                 size++;
 
             table[index] = make_pair(key,value);
         }
 
-        void remove(TK key){
-            size_t index = hashCode(key);
-            index = openAddressing(key, index);
-
-            if(table[index].first == key) {
-                table[index].first = TK{};
-                size--;
-            }
-        }
-
-        TV find(const TK& key) const {
-            size_t index = hashCode(key);
-            index = openAddressing(key, index);
+        const TV& search(const TK& key) {
+            size_t index = findIndex(key);
 
             if(table[index].first == key)
                 return table[index].second;
-
-            throw std::out_of_range("Key not found in the hash table");
+            else
+                throw std::out_of_range("Key not found in table.");
         }
 
         ~HashTable() = default;
