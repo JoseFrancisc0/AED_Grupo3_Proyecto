@@ -14,7 +14,7 @@ class HashTable{
         int size = 0;
         vector<pair<TK,TV>> table;
 
-        size_t hashCode(TK key){
+        size_t hashCode(const TK& key){
             return std::hash<TK>{}(key) % capacity;
         }
 
@@ -29,7 +29,7 @@ class HashTable{
                     insert(oldTable[i].first, oldTable[i].second);
         }
 
-        size_t findIndex(TK key){
+        size_t findIndex(const TK& key){
             size_t index = hashCode(key);
             size_t startIndex = index;
 
@@ -47,7 +47,7 @@ class HashTable{
             table = vector<pair<TK,TV>>(capacity, make_pair(TK(),TV()));
         }
 
-        void insert(TK key, TV value) {
+        void insert(const TK& key, const TV& value) {
             if((double) size/capacity > maxFillFactor)
                 rehash();
 
@@ -57,6 +57,18 @@ class HashTable{
                 size++;
 
             table[index] = make_pair(key,value);
+        }
+
+        void remove(const TK& key){
+            size_t index = findIndex(key);
+
+            if(table[index].first == key){
+                table[index].first = TK();
+                table[index].second = TV();
+                size--;
+            }
+            else
+                throw std::out_of_range("Key not found ");
         }
 
         const TV& search(const TK& key) {
