@@ -52,7 +52,16 @@ class HashTable{
             table[index] = make_pair(key,value);
         }
 
-        void remove(TK key);
+        void remove(TK key){
+            size_t index = hashCode(key);
+            index = openAddressing(key, index);
+
+            if(table[index].first == key) {
+                table[index].first = TK{};
+                size--;
+            }
+        }
+
         ~HashTable() = default;
 };
 
