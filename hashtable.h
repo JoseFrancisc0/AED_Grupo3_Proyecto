@@ -27,10 +27,6 @@ class HashTable{
             for(size_t i=0; i<oldCap; i++)
                 if(oldTable[i].first != TK())
                     insert(oldTable[i].first, oldTable[i].second);
-
-            cout << "RESIZING" << endl;
-            this->print();
-            cout << '\n';
         }
 
         size_t findIndex(TK key){

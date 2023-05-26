@@ -2,6 +2,7 @@
 #define BLOCKCHAIN_H
 
 #include "block.h"
+#include "hashtable.h"
 #include <vector>
 #include <stdexcept>
 using namespace std;
@@ -16,6 +17,21 @@ class BlockChain {
         };
 
         Node *head = nullptr;
+        HashTable<string, Transaction> table;
+
+        void constructHashTable(){
+            Node* current = head;
+
+            while(current != nullptr){
+                const Block& nodeBlock = current->block;
+                const string& key = nodeBlock.getBlockhash();
+                const Transaction& value = nodeBlock.getTransaction();
+
+                table.insert(key, value);
+
+                current = current->next;
+            }
+        }
 
     public:
         BlockChain() = default;
@@ -74,7 +90,10 @@ class BlockChain {
             return current->block;
         }
 
-        Block search(int key); /// Equal to X: Hash Table
+        /// Equal to X: Hash Table
+        Transaction searchByKey(string key);
+        Transaction searchByIndex(int index);
+
         vector<Block> range_search(int begin, int end); /// Between X and Y: AVL Tree
         void cascadeRecalculation(); /// Recalculo en cascada
         Block deleteRecordatIndex(int key); /// Elimina registros por indice
@@ -86,7 +105,7 @@ class BlockChain {
                 if(current->block.getBlockhash() != current->block.calculateHash()) /// Check current hash validity
                     return false;
 
-                if(current->block.getBlockhash() != current->block.getPrevhash()) /// Check previous hash validity
+                if(current->block.getBlockhash() != current->next->block.getPrevhash()) /// Check previous hash validity
                     return false;
 
                 current = current->next;
