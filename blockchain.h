@@ -87,7 +87,25 @@ class BlockChain {
         }
 
         vector<Block> range_search(int begin, int end); /// Between X and Y: AVL Tree
-        void cascadeRecalculation(); /// Recalculo en cascada
+
+        /// Recalculo en cascada
+        void cascadeRecalculation(){
+            Node* current = head;
+
+            while(current != nullptr){
+                Block& block = current->block;
+
+                block.setBlockHash();
+
+                Node* nextNode = current->next;
+                if(nextNode != nullptr){
+                    Block& nextBlock = nextNode->block;
+                    nextBlock.setPrevHash(block.getBlockhash());
+                }
+
+                current = current->next;
+            }
+        }
 
         /// Elimina registros por indice
         Block deleteRecordatIndex(int index){
