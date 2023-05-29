@@ -82,7 +82,7 @@ class BlockChain {
         }
 
         /// Equal to X: Hash Table
-        Transaction search(string key){
+        Transaction search(const string& key){
             return table.search(key);
         }
 
