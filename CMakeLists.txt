@@ -8,7 +8,7 @@ enable_testing()
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 
-add_executable(AED_Proyecto main.cpp transaction.h block.h blockchain.h hashtable.h)
+add_executable(AED_Proyecto main.cpp transaction.h block.h blockchain.h hashtable.h avl.h)
 
 # Link OpenSSL
 target_link_libraries(AED_Proyecto ${OPENSSL_LIBRARIES})
