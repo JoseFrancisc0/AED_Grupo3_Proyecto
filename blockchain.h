@@ -88,7 +88,37 @@ class BlockChain {
 
         vector<Block> range_search(int begin, int end); /// Between X and Y: AVL Tree
         void cascadeRecalculation(); /// Recalculo en cascada
-        Block deleteRecordatIndex(int key); /// Elimina registros por indice
+
+        /// Elimina registros por indice
+        Block deleteRecordatIndex(int index){
+            if(index < 0 || index >= getBlockCount())
+                throw std::out_of_range("Invalid index.");
+
+            /// delete head
+            if(index == 0){
+                Node* temp = head;
+                head = head->next;
+                Block deletedBlock = temp->block;
+                delete temp;
+                return deletedBlock;
+            }
+
+            Node* prev = nullptr;
+            Node* current = head;
+            int currentIndex = 0;
+            while(currentIndex < index && current != nullptr){
+                prev = current;
+                current = current->next;
+                currentIndex++;
+            }
+
+            prev->next = current->next;
+            Block deletedBlock = current->block;
+            delete current;
+            table.remove(deletedBlock.getBlockhash());
+
+            return deletedBlock;
+        }
 
         /// Validacion de la blockchain
         bool validateBlockchain(){
