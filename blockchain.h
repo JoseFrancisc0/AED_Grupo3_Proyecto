@@ -92,6 +92,10 @@ class BlockChain {
         void cascadeRecalculation(){
             Node* current = head;
 
+            /// Si head es eliminado, nuevo head pasa a ser Genesis block
+            if(!current->block.getPrevhash().empty())
+                current->block.setPrevHash("");
+
             while(current != nullptr){
                 Block& block = current->block;
 
