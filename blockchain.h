@@ -139,6 +139,7 @@ class BlockChain {
             delete current;
             table.remove(deletedBlock.getBlockhash());
 
+            cascadeRecalculation(); /// Recalcula al final
             return deletedBlock;
         }
 
