@@ -2,7 +2,9 @@
 #define BLOCK_H
 
 #include "transaction.h"
+#include <iomanip>
 #include <string>
+#include <sstream>
 #include <openssl/sha.h>
 using namespace std;
 
@@ -25,8 +27,13 @@ class Block{
             SHA256_Update(&sha256, data.c_str(), data.length());
             SHA256_Final(hash, &sha256);
 
-            string hashString(reinterpret_cast<const char*>(hash), SHA256_DIGEST_LENGTH);
-            return hashString;
+            /// Convertir a hexadecimal
+            stringstream ss;
+            ss << hex << setfill('O');
+            for(unsigned char i : hash)
+                ss << setw(2) << static_cast<unsigned int>(i);
+
+            return ss.str();
         }
 
         void setTransaction(const Transaction& _transaction){
