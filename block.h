@@ -29,6 +29,18 @@ class Block{
             return hashString;
         }
 
+        void setTransaction(const Transaction& _transaction){
+            transaction = _transaction;
+        }
+
+        void setBlockHash(){
+            blockHash = calculateHash();
+        }
+
+        void setPrevHash(const string& _prevHash){
+            prevHash = _prevHash;
+        }
+
         string getBlockhash() const{
             return blockHash;
         }
