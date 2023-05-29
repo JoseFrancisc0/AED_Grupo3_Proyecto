@@ -19,20 +19,6 @@ class BlockChain {
         Node *head = nullptr;
         HashTable<string, Transaction> table;
 
-        void constructHashTable(){
-            Node* current = head;
-
-            while(current != nullptr){
-                const Block& nodeBlock = current->block;
-                const string& key = nodeBlock.getBlockhash();
-                const Transaction& value = nodeBlock.getTransaction();
-
-                table.insert(key, value);
-
-                current = current->next;
-            }
-        }
-
     public:
         BlockChain() = default;
 
@@ -51,7 +37,10 @@ class BlockChain {
                 Block newBlock(_transaction, "");
                 Node *newNode = new Node(newBlock);
                 head = newNode;
-            } else { /// Insertar bloque al final
+
+                table.insert(newBlock.getBlockhash(), _transaction); /// Actualiza tabla hash
+            }
+            else { /// Insertar bloque al final
                 Block newBlock(_transaction, head->block.getPrevhash());
                 Node *newNode = new Node(newBlock);
 
@@ -60,6 +49,8 @@ class BlockChain {
                     temp = temp->next;
 
                 temp->next = newNode;
+
+                table.insert(newBlock.getBlockhash(), _transaction); /// Actualiza tabla hash
             }
         }
 
@@ -91,8 +82,9 @@ class BlockChain {
         }
 
         /// Equal to X: Hash Table
-        Transaction searchByKey(string key);
-        Transaction searchByIndex(int index);
+        Transaction search(string key){
+            return table.search(key);
+        }
 
         vector<Block> range_search(int begin, int end); /// Between X and Y: AVL Tree
         void cascadeRecalculation(); /// Recalculo en cascada
