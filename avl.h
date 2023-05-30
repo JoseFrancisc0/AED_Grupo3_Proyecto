@@ -133,12 +133,10 @@ class AVL{
         void range_search(NodeAVL<TK,TV>* node, TK begin, TK end, vector<TV>& v){
             if(node == nullptr)
                 throw std::out_of_range("AVL empty");
-
-            if(node->key >= begin && node->key <= end)
-                v.push_back(node->value);
-
             if(node->key > begin)
                 range_search(node->left, begin, end, v);
+            if(node->key >= begin && node->key <= end)
+                v.push_back(node->value);
             if(node->key < end)
                 range_search(node->right, begin, end, v);
         }
