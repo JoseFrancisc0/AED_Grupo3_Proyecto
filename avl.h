@@ -18,11 +18,12 @@ class AVL{
 
             NodeAVL(UK _key, UV _value): key(_key), value(_value){};
 
-            ~NodeAVL(){
+            void killSelf(){
                 if(left != nullptr)
-                    delete left;
+                    left->killSelf();
                 if(right != nullptr)
-                    delete right;
+                    right->killSelf();
+                delete this;
             }
         };
 
@@ -81,6 +82,15 @@ class AVL{
             }
 
             updateHeight(node);
+        }
+
+        NodeAVL<TK,TV>* minValue(NodeAVL<TK,TV>* node){
+            if(node == nullptr)
+                return nullptr;
+            if(node->left == nullptr)
+                return node;
+
+            return minValue(node->left);
         }
 
         void insert(NodeAVL<TK,TV> *&node, TK key, TV value){

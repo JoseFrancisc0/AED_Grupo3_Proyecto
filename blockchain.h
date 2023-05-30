@@ -53,6 +53,7 @@ class BlockChain {
                 temp->next = newNode;
 
                 table.insert(newBlock.getBlockhash(), _transaction); /// Actualiza tabla hash
+                tree.insert(newBlock.getBlockhash(), _transaction); /// Actualiza arbol AVL
             }
         }
 
@@ -143,6 +144,7 @@ class BlockChain {
             Block deletedBlock = current->block;
             delete current;
             table.remove(deletedBlock.getBlockhash());
+            tree.remove(deletedBlock.getBlockhash());
 
             cascadeRecalculation(); /// Recalcula al final
             return deletedBlock;
