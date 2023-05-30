@@ -143,8 +143,8 @@ class BlockChain {
             prev->next = current->next;
             Block deletedBlock = current->block;
             delete current;
-            table.remove(deletedBlock.getBlockhash());
-            tree.remove(deletedBlock.getBlockhash());
+            table.remove(deletedBlock.getBlockhash()); /// Actualiza tabla hash
+            tree.remove(deletedBlock.getBlockhash()); /// Actualiza arbol AVL
 
             cascadeRecalculation(); /// Recalcula al final
             return deletedBlock;
