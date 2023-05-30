@@ -5,43 +5,42 @@
 #include <stdexcept>
 using namespace std;
 
-template<typename UK, typename UV>
-struct Node{
-    UK key;
-    UV value;
-    int height = 0;
-    Node* left = nullptr;
-    Node* right = nullptr;
-
-    Node(UK _key, UV _value): key(_key), value(_value){};
-
-    void killself(){
-        if(left != nullptr)
-            left->killself();
-        if(right != nullptr)
-            right->killself();
-        delete this;
-    }
-};
-
 template<typename TK, typename TV>
 class AVL{
-    private:  
-        Node<TK,TV>* root;
+    private:
+        template<typename UK, typename UV>
+        struct NodeAVL{
+            UK key;
+            UV value;
+            int height = 0;
+            NodeAVL* left = nullptr;
+            NodeAVL* right = nullptr;
 
-        int height(Node<TK,TV> *node){
+            NodeAVL(UK _key, UV _value): key(_key), value(_value){};
+
+            ~NodeAVL(){
+                if(left != nullptr)
+                    delete left;
+                if(right != nullptr)
+                    delete right;
+            }
+        };
+
+        NodeAVL<TK,TV>* root;
+
+        int height(NodeAVL<TK,TV> *node){
             if (node == nullptr)
                 return -1;
             else
                 return node->height;
         }
 
-        void updateHeight(Node<TK,TV> *node){
+        void updateHeight(NodeAVL<TK,TV> *node){
             node->height = max(height(node->left), height(node->right)) +1;
         }
 
-        void left_rota(Node<TK,TV> *&node){
-            Node<TK,TV> *k1 = node->left;
+        void left_rota(NodeAVL<TK,TV> *&node){
+            NodeAVL<TK,TV> *k1 = node->left;
             node->left = k1->right;
             k1->right = node;
             node->height = max(height(node->left), height(node->right)) + 1;
@@ -49,8 +48,8 @@ class AVL{
             node = k1;
         }
 
-        void right_rota(Node<TK,TV> *&node){
-            Node<TK,TV> *k1 = node->right;
+        void right_rota(NodeAVL<TK,TV> *&node){
+            NodeAVL<TK,TV> *k1 = node->right;
             node->right = k1->left;
             k1->left = node;
             node->height = max(height(node->right), height(node->left)) + 1;
@@ -58,7 +57,7 @@ class AVL{
             node = k1;
         }
 
-        void balance(Node<TK,TV> *&node){
+        void balance(NodeAVL<TK,TV> *&node){
             if(node==nullptr)
                 throw std::out_of_range("AVL empty");
 
@@ -84,9 +83,9 @@ class AVL{
             updateHeight(node);
         }
 
-        void insert(Node<TK,TV> *&node, TK key, TV value){
+        void insert(NodeAVL<TK,TV> *&node, TK key, TV value){
             if (node == nullptr)
-                node = new Node<TK,TV>(key,value);
+                node = new NodeAVL<TK,TV>(key,value);
             else if (key < node->key)
                 insert(node->left, key, value);
             else if (key > node->key)
@@ -95,7 +94,7 @@ class AVL{
             balance(node);
         }
 
-        void remove(Node<TK,TV> *&node, TK key){
+        void remove(NodeAVL<TK,TV> *&node, TK key){
             if(node==nullptr)
                 throw std::out_of_range("AVL empty.");
 
@@ -104,13 +103,13 @@ class AVL{
             else if(key > node->key)
                 remove(node->right, key);
             else if((node->left!=nullptr) && (node->right!=nullptr)){
-                Node<TK,TV>* temp = minValue(node->right);
+                NodeAVL<TK,TV>* temp = minValue(node->right);
                 node->key=temp->key;
                 node->value=temp->value;
                 remove(node->right, temp->key);
             }
             else{
-                Node<TK,TV>* old = node;
+                NodeAVL<TK,TV>* old = node;
                 if(node->left != nullptr)
                     node=node->left;
                 else
@@ -121,7 +120,7 @@ class AVL{
             balance(node);
         }
 
-        void range_search(Node<TK,TV>* node, TK begin, TK end, vector<TV>& v){
+        void range_search(NodeAVL<TK,TV>* node, TK begin, TK end, vector<TV>& v){
             if(node == nullptr)
                 throw std::out_of_range("AVL empty");
 
