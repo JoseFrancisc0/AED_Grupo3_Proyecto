@@ -13,15 +13,15 @@ class Block{
         Transaction transaction;
         string blockHash;
         string prevHash;
-        int nonce = 0; /// Proof of Work
+        int nonce = 0; /// Proof of Work Nonce
     public:
         Block(Transaction _transaction, string _prevHash): transaction(_transaction), prevHash(_prevHash){
-            blockHash = calculateHash();
+            mineBlock();
         }
 
         string calculateHash() const{
             string data = transaction.getClient() + transaction.getLocation() + to_string(transaction.getAmount()) +
-                    to_string(transaction.getDate()) + prevHash;
+                    to_string(transaction.getDate()) + prevHash + to_string(nonce);
             unsigned char hash[SHA256_DIGEST_LENGTH];
             SHA256_CTX sha256;
             SHA256_Init(&sha256);
@@ -37,9 +37,9 @@ class Block{
             return ss.str();
         }
 
-        /// Proof of Work : '00' prefix
+        /// Proof of Work
         void mineBlock(){
-            string target = "00";
+            string target(4, '0'); /// Difficulty = 4
 
             while(blockHash.substr(0, target.length()) != target){
                 nonce++;
@@ -49,12 +49,10 @@ class Block{
 
         void setTransaction(const Transaction& _transaction){
             transaction = _transaction;
-            mineBlock();
         }
 
         void setPrevHash(const string& _prevHash){
             prevHash = _prevHash;
-            mineBlock();
         }
 
         string getBlockhash() const{
@@ -70,9 +68,9 @@ class Block{
         }
 
         void printBlock(){
+            cout << "Nonce: " << nonce << endl;
             cout << "Hash del bloque: " << blockHash << endl;
             cout << "Hash previo: " << prevHash << endl;
-            cout << "Transaccion: " << endl;
             transaction.printTransaction();
         }
 
