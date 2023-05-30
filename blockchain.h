@@ -1,6 +1,7 @@
 #ifndef BLOCKCHAIN_H
 #define BLOCKCHAIN_H
 
+#include "avl.h"
 #include "block.h"
 #include "hashtable.h"
 #include <vector>
@@ -18,6 +19,7 @@ class BlockChain {
 
         Node *head = nullptr;
         HashTable<string, Transaction> table;
+        AVL<string, Transaction> tree;
 
     public:
         BlockChain() = default;
@@ -86,7 +88,10 @@ class BlockChain {
             return table.search(key);
         }
 
-        vector<Block> range_search(int begin, int end); /// Between X and Y: AVL Tree
+        /// Between X and Y: AVL Tree
+        vector<Transaction> range_search(const string& begin, const string& end){
+            return tree.range_search(begin, end);
+        }
 
         /// Recalculo en cascada
         void cascadeRecalculation(){
