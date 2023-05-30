@@ -60,6 +60,13 @@ class Block{
             return transaction;
         }
 
+        void printBlock(){
+            cout << "Hash del bloque: " << blockHash << endl;
+            cout << "Hash previo: " << prevHash << endl;
+            cout << "Transaccion: " << endl;
+            transaction.printTransaction();
+        }
+
         ~Block() = default;
 };
 
