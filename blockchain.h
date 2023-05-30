@@ -105,7 +105,7 @@ class BlockChain {
             while(current != nullptr){
                 Block& block = current->block;
 
-                block.setBlockHash();
+                block.mineBlock();
 
                 Node* nextNode = current->next;
                 if(nextNode != nullptr){

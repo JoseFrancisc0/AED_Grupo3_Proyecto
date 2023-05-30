@@ -13,6 +13,7 @@ class Block{
         Transaction transaction;
         string blockHash;
         string prevHash;
+        int nonce = 0; /// Proof of Work
     public:
         Block(Transaction _transaction, string _prevHash): transaction(_transaction), prevHash(_prevHash){
             blockHash = calculateHash();
@@ -29,23 +30,31 @@ class Block{
 
             /// Convertir a hexadecimal
             stringstream ss;
-            ss << hex << setfill('O');
+            ss << hex << setfill('0');
             for(unsigned char i : hash)
                 ss << setw(2) << static_cast<unsigned int>(i);
 
             return ss.str();
         }
 
-        void setTransaction(const Transaction& _transaction){
-            transaction = _transaction;
+        /// Proof of Work : '00' prefix
+        void mineBlock(){
+            string target = "00";
+
+            while(blockHash.substr(0, target.length()) != target){
+                nonce++;
+                blockHash = calculateHash();
+            }
         }
 
-        void setBlockHash(){
-            blockHash = calculateHash();
+        void setTransaction(const Transaction& _transaction){
+            transaction = _transaction;
+            mineBlock();
         }
 
         void setPrevHash(const string& _prevHash){
             prevHash = _prevHash;
+            mineBlock();
         }
 
         string getBlockhash() const{
