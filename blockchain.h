@@ -4,8 +4,10 @@
 #include "avl.h"
 #include "block.h"
 #include "hashtable.h"
-#include <vector>
+#include <fstream>
+#include <sstream>
 #include <stdexcept>
+#include <vector>
 using namespace std;
 
 class BlockChain {
@@ -166,7 +168,25 @@ class BlockChain {
             return true;
         }
 
-        void loadFromTextfile(); /// Carga de datos por csv
+        /// Carga de datos por csv
+        void loadFromCSV(const string& csv){
+            ifstream file(csv);
+            if(!file.is_open())
+                throw std::runtime_error("Failed to open file " + csv);
+
+            string line;
+            while(getline(file, line)){
+                stringstream ss(line);
+                string _client, _location, _amountStr;
+                if(getline(ss, _client, ',') && getline(ss, _location, ',') && getline(ss, _amountStr, ',')){
+                    double _amount = stod(_amountStr);
+                    Transaction _transaction(_client, _location, _amount);
+                    addTransaction(_transaction);
+                }
+            }
+
+            file.close();
+        }
 };
 
 #endif //BLOCKCHAIN_H
