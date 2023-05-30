@@ -3,53 +3,188 @@
 
 #include <vector>
 using namespace std;
+template<typename UK, typename UV>
+struct Node{
+    UK key;
+    UV value;
+    int height = 0;
+    Node* left = nullptr;
+    Node* right = nullptr;
+
+    Node(UK _key, UV _value): key(_key), value(_value){};
+
+    void killself(){
+        if(left != nullptr)
+            left->killself();
+        if(right != nullptr)
+            right->killself();
+        delete this;
+    }
+};
 
 template<typename TK, typename TV>
 class AVL{
-    private:
-        template<typename UK, typename UV>
-        struct Node{
-            UK key;
-            UV value;
-            int height = 0;
-            Node* left = nullptr;
-            Node* right = nullptr;
-
-            Node(UK _key, UV _value): key(_key), value(_value){};
-
-            void killself(){
-                if(left != nullptr)
-                    left->killself();
-                if(right != nullptr)
-                    right->killself();
-                delete this;
-            }
-        };
-        Node<TK,TV>* root = nullptr;
-
-        void insert(Node<TK,TV>* _node, TK _key, TV _value);
-        void remove(Node<TK,TV>* _node, TK _key);
-        void range_search(Node<TK,TV>* _node, TK _begin, TK _end, vector<TV>& v);
-
+    private:  
+        Node<TK,TV>* root;;
+        void insert(Node<TK,TV> *&node, TK key, TV value);
+        void remove(Node<TK,TV> *&node, TK key);
+        void range_search(Node<TK,TV>* node, TK begin, TK end, vector<TV>& v);
+        TV search(Node<TK,TV>* node, TK key);
+        
+        void balance(Node<TK,TV> *&node);
+        int height(Node<TK,TV> *node);
+        void left_rota(Node<TK,TV> *&node);
+        void right_rota(Node<TK,TV> *&node);
+        void updateHeight(Node<TK,TV> *node);
+        Node<TK,TV>* minValue(Node<TK,TV> *node);
 
     public:
-        AVL() = default;
+        AVLTree() : root(nullptr) {}
 
-        void insert(TK _key, TV _value){
-            insert(this->root, _key, _value);
+        void insert(TK key, TV value){
+            insert(this->root, key, value);
         }
 
-        void remove(TK _key){
-            remove(this->root, _key);
+        void remove(TK key){
+            remove(this->root, key);
+        }
+
+        TV search(TK _key){
+            return search(this->root, key);
         }
 
         vector<TV> range_search(TK begin, TK end){
             vector<TV> result;
-            range_search(root, begin, end, result);
+            range_search(this->root, begin, end, result);
             return result;
         }
 
-        ~AVL() = default;
+        ~AVL(){
+            if(this->root != nullptr)
+                this->root->killSelf();
+        }
 };
+
+//INSERT
+
+template<typename TK, typename TV>
+void insert(Node<TK,TV> *&node, TK key, TV value){
+    if (node == nullptr)
+        node = new Node<TK,TV>(key,value);
+    else if (key < node->key)
+        insert(node->left, key, value);
+    else if (key > node->key)
+        insert(node->right, key, value);
+    
+    balance(node);
+}
+
+//BALANCE
+
+template<typename TK, typename TV>
+void balance(Node<TK,TV> *&node){
+    if(node==nullptr)
+        return;
+    if(height(node->left)-height(node->right)>1){
+        if(height(node->left->left) >= height(node->left->right))
+            left_rota(node);
+        else{
+            right_rota(node->left);
+            left_rota(node);
+        }
+    }
+    else{
+        if(height(node->left)-height(node->right)<-1){
+            if(height(node->right->right) >= height(node->right->left))
+                right_rota(node);
+            else{
+                left_rota(node->right);
+                right_rota(node);
+            }
+        }
+    }
+    updateHeight(node);
+}
+
+template<typename TK, typename TV>
+int height(Node<TK,TV> *node){
+    if (node == nullptr) {
+        return -1;
+    } else {
+        return node->height;
+    }
+}
+
+template<typename TK, typename TV>
+void left_rota(Node<TK,TV> *&node){
+    Node<TK,TV> *k1 = node->left;
+    node->left = k1->right;
+    k1->right = node;
+    node->height = max(height(node->left), height(node->right)) + 1;
+    k1->height = max(height(k1->left), node->height) + 1;
+    node = k1;
+}
+
+template<typename TK, typename TV>
+void right_rota(Node<TK,TV> *&node){
+    Node<TK,TV> *k1 = node->right;
+    node->right = k1->left;
+    k1->left = node;
+    node->height = max(height(node->right), height(node->left)) + 1;
+    k1->height = max(height(k1->right), node->height) + 1;
+    node = k1;
+}
+
+template<typename TK, typename TV>
+void updateHeight(Node<TK,TV> *node){
+    node->height = max(height(node->left), height(node->right)) +1;
+}
+
+//REMOVE
+
+template<typename TK, typename TV>
+void remove(Node<TK,TV> *&node, TK key){
+    if(node==nullptr)
+        return;
+    if(key < node->key)
+        remove(node->left, key);
+    else if(key > node->key)
+        remove(node->right, key);
+    else if((node->left!=nullptr) && (node->right!=nullptr)){
+        Node<TK,TV>* temp = minValue(node->right);
+        node->key=temp->key;
+        node->value=temp->value;
+        remove(node->right, temp->key);
+    }
+    else{
+        Node<TK,TV>* old = node;
+        if(node->left != nullptr)
+            node=node->left;
+        else
+            node=node->right;
+        delete old;
+    }
+    balance(node);
+}
+
+template<typename TK, typename TV>
+Node<TK,TV>* minValue(Node<TK,TV> *node){
+    if(node == nullptr) return NULL;
+    if(node->left == nullptr) return node;
+    return minValue(node->left);
+}
+
+//SEARCH
+
+template<typename TK, typename TV>
+TV search(Node<TK,TV>* node, TK key){
+    if(node==nullptr)
+        return TV{};
+    if(key< node->key)
+        return find(node->left, key);
+    if(key> node->key)
+        return find(node->right, key);
+    return TV;
+}
 
 #endif //AED_PROYECTO_AVL_H
