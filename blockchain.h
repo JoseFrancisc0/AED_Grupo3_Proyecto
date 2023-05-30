@@ -64,7 +64,7 @@ class BlockChain {
                 return count;
 
             Node* current = head;
-            while(current->next != nullptr){
+            while(current != nullptr){
                 count++;
                 current = current->next;
             }

@@ -1,6 +1,7 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
+#include <iostream>
 #include <string>
 #include <ctime>
 using namespace std;
@@ -31,6 +32,18 @@ class Transaction{
 
         time_t getDate() const{
             return date;
+        }
+
+        void printTransaction(){
+            cout << "Cliente: " << client << endl;
+            cout << "Lugar: " << location << endl;
+            cout << "Monto: " << amount << endl;
+
+            char buffer[80];
+            struct tm* timeinfo;
+            timeinfo = localtime(&date);
+            strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
+            cout << "Fecha: " << buffer << endl;
         }
 
         ~Transaction() = default;
