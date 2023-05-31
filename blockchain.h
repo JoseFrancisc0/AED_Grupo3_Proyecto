@@ -16,7 +16,7 @@ class BlockChain {
             Block block;
             Node *next = nullptr;
 
-            Node(Block _block) : block(_block) {};
+            Node(const Block& _block) : block(_block) {};
         };
 
         Node *head = nullptr;
@@ -36,7 +36,7 @@ class BlockChain {
         }
 
         /// Inserta transacciones
-        void addTransaction(Transaction _transaction) {
+        void addTransaction(const Transaction& _transaction) {
             if (head == nullptr) { /// Blockchain vacia : bloque genesis
                 Block newBlock(_transaction, "");
                 Node *newNode = new Node(newBlock);
