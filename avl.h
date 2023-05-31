@@ -1,6 +1,7 @@
 #ifndef AED_PROYECTO_AVL_H
 #define AED_PROYECTO_AVL_H
 
+#include <iostream>
 #include <vector>
 #include <stdexcept>
 using namespace std;
