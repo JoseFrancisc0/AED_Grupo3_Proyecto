@@ -59,16 +59,10 @@ class HashTable{
             table[index] = make_pair(key,value);
         }
 
-        void remove(const TK& key){
-            size_t index = findIndex(key);
-
-            if(table[index].first == key){
-                table[index].first = TK();
-                table[index].second = TV();
-                size--;
-            }
-            else
-                throw std::out_of_range("Key not found ");
+        void clear(){
+            capacity = 5; /// Reset capacity
+            table.assign(capacity, make_pair(TK(), TV()));
+            size = 0;
         }
 
         const TV& search(const TK& key) {
