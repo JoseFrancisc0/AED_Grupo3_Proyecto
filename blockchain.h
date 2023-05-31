@@ -20,8 +20,8 @@ class BlockChain {
         };
 
         Node *head = nullptr;
-        HashTable<string, Transaction> table;
-        AVL<string, Transaction> tree;
+        HashTable<string, Transaction> table; /// Fully tested
+        AVL<string, Transaction> tree; /// To be tested
 
         /// Builds the Hash table
         void buildHashTable(){
@@ -30,6 +30,16 @@ class BlockChain {
             Node* current = head;
             while(current != nullptr){
                 table.insert(current->block.getBlockhash(), current->block.getTransaction());
+                current = current->next;
+            }
+        }
+
+        void buildAVL(){
+            tree.clear(); /// Reset avl
+
+            Node* current = head;
+            while(current != nullptr){
+                tree.insert(current->block.getBlockhash(), current->block.getTransaction());
                 current = current->next;
             }
         }
@@ -90,6 +100,7 @@ class BlockChain {
 
         /// Between X and Y: AVL Tree
         vector<Transaction> range_search(const string& begin, const string& end){
+            buildAVL();
             return tree.range_search(begin, end);
         }
 
