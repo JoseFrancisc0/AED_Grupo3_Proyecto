@@ -20,8 +20,8 @@ class BlockChain {
         };
 
         Node *head = nullptr;
-        HashTable<string, Transaction> table;
-        AVL<string, Transaction> tree;
+        HashTable<string, Transaction> table; /// Works perfectly
+        AVL<string, Transaction> tree; /// AVL seems to not work, cant test
 
     public:
         BlockChain() = default;
@@ -55,7 +55,6 @@ class BlockChain {
                 temp->next = newNode;
 
                 table.insert(newBlock.getBlockhash(), _transaction); /// Actualiza tabla hash
-                tree.insert(newBlock.getBlockhash(), _transaction); /// Actualiza arbol AVL
             }
         }
 
@@ -72,18 +71,6 @@ class BlockChain {
             }
 
             return count;
-        }
-
-        /// El bloque mas reciente
-        Block getLatestBlock(){
-            if(head == nullptr)
-                throw std::out_of_range("BlockChain is empty.");
-
-            Node* current = head;
-            while(current->next != nullptr)
-                current = current->next;
-
-            return current->block;
         }
 
         /// Equal to X: Hash Table
@@ -146,26 +133,8 @@ class BlockChain {
             Block deletedBlock = current->block;
             delete current;
             table.remove(deletedBlock.getBlockhash()); /// Actualiza tabla hash
-            tree.remove(deletedBlock.getBlockhash()); /// Actualiza arbol AVL
 
-            cascadeRecalculation(); /// Recalcula al final
             return deletedBlock;
-        }
-
-        /// Validacion de la blockchain
-        bool validateBlockchain(){
-            Node* current = head;
-            while(current->next != nullptr){
-                if(current->block.getBlockhash() != current->block.calculateHash()) /// Check current hash validity
-                    return false;
-
-                if(current->block.getBlockhash() != current->next->block.getPrevhash()) /// Check previous hash validity
-                    return false;
-
-                current = current->next;
-            }
-
-            return true;
         }
 
         /// Carga de datos por csv

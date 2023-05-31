@@ -13,7 +13,7 @@ class Block{
         Transaction transaction;
         string blockHash;
         string prevHash;
-        int nonce = 0; /// Proof of Work Nonce
+        int nonce; /// Proof of Work Nonce
     public:
         Block(Transaction _transaction, string _prevHash): transaction(_transaction), prevHash(_prevHash){
             mineBlock();
@@ -39,7 +39,10 @@ class Block{
 
         /// Proof of Work
         void mineBlock(){
+            nonce = 0; /// Reset Nonce
             string target(4, '0'); /// Difficulty = 4
+            blockHash = calculateHash(); /// Reset the hash
+
 
             while(blockHash.substr(0, target.length()) != target){
                 nonce++;
