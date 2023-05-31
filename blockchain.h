@@ -45,12 +45,12 @@ class BlockChain {
                 table.insert(newBlock.getBlockhash(), _transaction); /// Actualiza tabla hash
             }
             else { /// Insertar bloque al final
-                Block newBlock(_transaction, head->block.getPrevhash());
-                Node *newNode = new Node(newBlock);
-
                 Node *temp = head;
                 while (temp->next != nullptr)
                     temp = temp->next;
+
+                Block newBlock(_transaction, temp->block.getBlockhash());
+                Node* newNode = new Node(newBlock);
 
                 temp->next = newNode;
 
@@ -186,6 +186,19 @@ class BlockChain {
             }
 
             file.close();
+        }
+
+        void printBlockchain(){
+            Node* current = head;
+            int i = 1;
+            cout << "|------BLOCKCHAIN------|" << endl;
+            while(current != nullptr){
+                cout << "BLOQUE " << i << ":" << endl;
+                current->block.printBlock();
+                cout << '\n';
+                current = current->next;
+                i++;
+            }
         }
 };
 
