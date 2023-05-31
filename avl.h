@@ -107,14 +107,6 @@ class AVL{
                 range_search(node->right, begin, end, v);
         }
 
-        void print(NodeAVL<TK,TV>* node){
-            if(node != nullptr){
-                print(node->left);
-                cout << node->key << "," << node->value << " ";
-                print(node->right);
-            }
-        }
-
     public:
         AVL<TK,TV>() : root(nullptr) {}
 
@@ -126,10 +118,6 @@ class AVL{
             vector<TV> result;
             range_search(this->root, begin, end, result);
             return result;
-        }
-
-        void print(){
-            print(root);
         }
 
         void clear(){
