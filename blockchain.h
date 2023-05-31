@@ -20,8 +20,19 @@ class BlockChain {
         };
 
         Node *head = nullptr;
-        HashTable<string, Transaction> table; /// Works perfectly
-        AVL<string, Transaction> tree; /// AVL seems to not work, cant test
+        HashTable<string, Transaction> table;
+        AVL<string, Transaction> tree;
+
+        /// Builds the Hash table
+        void buildHashTable(){
+            table.clear(); /// Reset table
+
+            Node* current = head;
+            while(current != nullptr){
+                table.insert(current->block.getBlockhash(), current->block.getTransaction());
+                current = current->next;
+            }
+        }
 
     public:
         BlockChain() = default;
@@ -53,8 +64,6 @@ class BlockChain {
                 Node* newNode = new Node(newBlock);
 
                 temp->next = newNode;
-
-                table.insert(newBlock.getBlockhash(), _transaction); /// Actualiza tabla hash
             }
         }
 
@@ -75,6 +84,7 @@ class BlockChain {
 
         /// Equal to X: Hash Table
         Transaction search(const string& key){
+            buildHashTable();
             return table.search(key);
         }
 
@@ -107,7 +117,7 @@ class BlockChain {
         }
 
         /// Elimina registros por indice: NO HACE RECALCULO EN CASCADA
-        Block deleteRecordatIndex(int index){
+        void deleteRecordatIndex(int index){
             if(index < 0 || index >= getBlockCount())
                 throw std::out_of_range("Invalid index.");
 
@@ -115,9 +125,8 @@ class BlockChain {
             if(index == 0){
                 Node* temp = head;
                 head = head->next;
-                Block deletedBlock = temp->block;
                 delete temp;
-                return deletedBlock;
+                return;
             }
 
             Node* prev = nullptr;
@@ -130,11 +139,7 @@ class BlockChain {
             }
 
             prev->next = current->next;
-            Block deletedBlock = current->block;
             delete current;
-            table.remove(deletedBlock.getBlockhash()); /// Actualiza tabla hash
-
-            return deletedBlock;
         }
 
         /// Carga de datos por csv : NO TESTEADO TODAVIA
