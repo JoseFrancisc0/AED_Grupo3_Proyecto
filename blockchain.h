@@ -20,10 +20,10 @@ class BlockChain {
         };
 
         Node *head = nullptr;
-        HashTable<string, Transaction> table; /// Fully tested
-        AVL<string, Transaction> tree; /// To be tested
+        HashTable<string, Transaction> table;
+        AVL<string, Transaction> tree;
 
-        /// Builds the Hash table
+        /// Construye el hash tabla
         void buildHashTable(){
             table.clear(); /// Reset table
 
@@ -34,6 +34,7 @@ class BlockChain {
             }
         }
 
+        /// Construye el AVL
         void buildAVL(){
             tree.clear(); /// Reset avl
 
