@@ -83,7 +83,7 @@ class BlockChain {
             return tree.range_search(begin, end);
         }
 
-        /// Recalculo en cascada
+        /// Recalculo en cascada; valida la blockchain
         void cascadeRecalculation(){
             Node* current = head;
 
@@ -106,7 +106,7 @@ class BlockChain {
             }
         }
 
-        /// Elimina registros por indice
+        /// Elimina registros por indice: NO HACE RECALCULO EN CASCADA
         Block deleteRecordatIndex(int index){
             if(index < 0 || index >= getBlockCount())
                 throw std::out_of_range("Invalid index.");
@@ -137,7 +137,7 @@ class BlockChain {
             return deletedBlock;
         }
 
-        /// Carga de datos por csv
+        /// Carga de datos por csv : NO TESTEADO TODAVIA
         void loadFromCSV(const string& csv){
             ifstream file(csv);
             if(!file.is_open())
