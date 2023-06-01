@@ -39,6 +39,7 @@ De forma resumida la tecnología blockchain presenta una serie de 3 mecanismos p
 - Consenso: tercer y definitivo mecanismo que utiliza las propiedades de la red descentralizada y distribuida (peer to peer) para verificar la integridad de los bloques en la cadena. Para cada bloque que se añade a la cadena se debe enviar una copia del bloque a cada uno de los usuarios de la red (nodos de la red peer to peer). Entonces, dado que todos los nodos tienen acceso a la cadena completa, se realiza una votación al añadir cada nuevo bloque para verificar su integridad. Si la votación sobrepasa el 50% + 1 votos del total de miembros, entonces el bloque se admite como válido. 
 
 ![image](https://github.com/JoseFrancisc0/AED_Grupo3_Proyecto/assets/54275767/3a20dea7-b182-44e1-b54f-7dcd185535c0)
+
 imagen: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8805074
 
 ![image](https://github.com/JoseFrancisc0/AED_Grupo3_Proyecto/assets/54275767/a3a471af-e5c4-4048-9e00-362207764a7f)
