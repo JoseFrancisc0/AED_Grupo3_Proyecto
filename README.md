@@ -7,9 +7,7 @@ Integrantes:
 - Jose Wong
 
 ## Introduccion
-Con la evolución tecnológica de los últimos años, hemos entrado a una era en la que cada vez más aplicaciones se digitalizan, o son nativas digitales. Uno de los inventos más disruptivos que acompañó esta digitalización masiva es el Blockchain. 
-
-Opera escencialmente como una base de datos distruida que permite registrar información relevante de forma segura y transparente gracias a los algoritmos que se emplean. Desde una perspectiva técnica se puede entender como una estructura de datos que almacena información en bloques, reconocibles mediante una identificación hash, que se encuentran enlazados con el bloque creado previamente y el siguiente creado (cita a CEPAL). 
+Con la evolución tecnológica de los últimos años, hemos entrado a una era en la que cada vez más aplicaciones se digitalizan, o son nativas digitales. Uno de los inventos más disruptivos que acompañó esta digitalización masiva es el Blockchain. Opera escencialmente como una base de datos distruida que permite registrar información relevante de forma segura y transparente gracias a los algoritmos que se emplean. Desde una perspectiva técnica se puede entender como una estructura de datos que almacena información en bloques, reconocibles mediante una identificación hash, que se encuentran enlazados con el bloque creado previamente y el siguiente creado (cita a CEPAL). 
 
 
 ## Caso de estudio : Retiro de dinero
@@ -48,7 +46,8 @@ imagen: https://repositorio.cepal.org/bitstream/handle/11362/47165/1/S2100364_en
 
 
 ### Estructuras de datos utilizadas
-- AVL Tree:
+- Tablas Hash: 
+- AVL Tree: 
 
 
 ### Proof of work
