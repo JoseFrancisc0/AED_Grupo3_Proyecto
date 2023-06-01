@@ -42,6 +42,7 @@ De forma resumida la tecnología blockchain presenta una serie de 3 mecanismos p
 imagen: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8805074
 
 ![image](https://github.com/JoseFrancisc0/AED_Grupo3_Proyecto/assets/54275767/a3a471af-e5c4-4048-9e00-362207764a7f)
+
 imagen: https://repositorio.cepal.org/bitstream/handle/11362/47165/1/S2100364_en.pdf
 
 
