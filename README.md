@@ -1,9 +1,9 @@
 # AED_Grupo3_Proyecto
 
 Integrantes:
-- Sebastian Peralta
 - Franco Bolaños
 - Mario Chincha
+- Sebastian Peralta
 - Jose Wong
 
 ## Introduccion
@@ -22,12 +22,16 @@ El caso de estudio utilizado para el desarrollo de este proyecto es el retiro de
 
 
 ## Importancia de Bockchain
-La tecnología blockchain hoy en día es sujeto de investigación en diversas disciplinas, cuya importancia des principalmente relevante para ciencias de la computación, ingeniería, telecomunicaciones, negocios y economía según Xu (xu, Chen y Kou). Algunas de sus principales ventajas, de acuerdo con Gokhan y Tektas (cita) son:
+La tecnología blockchain hoy en día es sujeto de investigación en diversas disciplinas, cuya importancia des principalmente relevante para ciencias de la computación, ingeniería, telecomunicaciones, negocios y economía (citar xu, Chen y Kou). Algunas de sus principales ventajas, de acuerdo con Gokhan y Tektas (cita) son:
 - Descentralización: utiliza transacciones peer to peer, lo que reduce la sobrecarga de una sola unidad de gestión como sucedería en un sistema centralizado. Esto mejora la eficiencia al reducir los cuellos de botella. Además permite aumentar su confiabilidad, al estar virtualmente siempre disponible al utilizar múltiples unidades de gestión.
 - Ejecución automática de contratos: utiliza contratos inteligentes, los cuales pueden definirse como protocolos de la transacción que ejecutan los terminos del contrato. 
 - Auditabilidad: está sustentada en la propiedad de transparencia e inmutabilidad de la red. Cada usuario (nodo) de la red contiene una copia de la cadena, por lo que puede verificar los valores de identificación de los bloques. Cada bloque en una blockchain contiene, además de su propia identificación, la de su bloque predecesor. Esto aumenta la trazabilidad del sistema en general y la detección de fraudes (cambios den las transacciones de los bloques), lo que asegura la inmutabilidad de la red.
-- Anonimidad: 
-- Prueba de trabajo
+- Anonimidad: los usuarios pueden interactuar con la red a partir de una dirección generada al azar. Dado su carácter descentralizado, no existe una autoridad central que fiscalice su registro. En este sentido un usuario puede usar múltiples direcciones dentro de la red para mantener cierto nivel de privacidad en sus transacciones y evitar exponer su identidad.
+
+Así mismo, utilizar una blockchain presenta una serie de 3 mecanismos principales para proteger la integridad de la data y evitar fraude. Dichos mecanismos son los siguientes:
+- Verificación de identificaciones hash: Cada bloque dentro de la cadena
+- Proof of work:
+- Consenso: 
 
 En este sentido tecnología blockchain se caracteriza por su descentralización, seguridad, confiabilidad y transparencia.
 
