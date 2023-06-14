@@ -116,13 +116,13 @@ class BlockChain {
             while(current != nullptr){
                 Block& block = current->block;
 
-                block.mineBlock();
-
                 Node* nextNode = current->next;
                 if(nextNode != nullptr){
                     Block& nextBlock = nextNode->block;
                     nextBlock.setPrevHash(block.getBlockhash());
                 }
+
+                block.mineBlock();
 
                 current = current->next;
             }
