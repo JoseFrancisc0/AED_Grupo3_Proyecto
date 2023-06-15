@@ -1,6 +1,7 @@
 #ifndef AED_PROYECTO_MAXHEAP_H
 #define AED_PROYECTO_MAXHEAP_H
 
+#include <stdexcept>
 #include <vector>
 using namespace std;
 
@@ -22,9 +23,22 @@ private:
 public:
     MaxHeap() = default;
 
-    void insert(TK _key, TV _value);
-    TV getMax();
-    void clear();
+    void insert(TK _key, TV _value){
+        heap.emplace_back(_key, _value);
+        int index = heap.size() - 1;
+        heapifyUp(index);
+    }
+
+    TV getMax(){
+        if(heap.empty())
+            throw std::out_of_range("MinHeap Empty");
+
+        return heap[0].second;
+    };
+
+    void clear(){
+        heap.clear();
+    }
 
     ~MaxHeap() = default;
 };
