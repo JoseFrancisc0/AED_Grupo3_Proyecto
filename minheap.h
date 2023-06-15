@@ -34,7 +34,7 @@ class MinHeap{
             if(heap.empty())
                 throw std::out_of_range("MinHeap Empty");
 
-            return heap[0];
+            return heap[0].second;
         }
 
         ~MinHeap() = default;
