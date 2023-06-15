@@ -37,6 +37,10 @@ class MinHeap{
             return heap[0].second;
         }
 
+        void clear(){
+            heap.clear();
+        }
+
         ~MinHeap() = default;
 };
 
