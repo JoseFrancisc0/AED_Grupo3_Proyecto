@@ -24,13 +24,15 @@ int main() {
         cout << "2. Mostrar Blockchain" << endl;
         cout << "3. Busqueda singular" << endl;
         cout << "4. Busqueda por rango" << endl;
-        cout << "5. Eliminar transaccion" << endl;
-        cout << "6. Recalculo en cascada" << endl;
-        cout << "7. Cargar datos" << endl;
+        cout << "5. Maximo valor" << endl;
+        cout << "6. Minimo valor" << endl;
+        cout << "7. Eliminar transaccion" << endl;
+        cout << "8. Recalculo en cascada" << endl;
+        cout << "9. Cargar datos" << endl;
         cout << '\n';
-        cout << "8. Salir" << endl;
+        cout << "0. Salir" << endl;
         cout << '\n';
-        cout << "Ingrese opcion (1-8): ";
+        cout << "Ingrese opcion (0-9): ";
         cin >> choice;
 
         switch (choice) {
@@ -87,6 +89,18 @@ int main() {
                 break;
             }
             case 5: {
+                Transaction result = blockchain.max_value();
+                cout << "Transaccion encontrada: " << endl;
+                result.printTransaction();
+                break;
+            }
+            case 6: {
+                Transaction result = blockchain.min_value();
+                cout << "Transaccion encontrada: " << endl;
+                result.printTransaction();
+                break;
+            }
+            case 7: {
                 int index;
                 cout << "Ingrese index: ";
                 cin >> index;
@@ -95,14 +109,14 @@ int main() {
                 cout << "La transaccion ha sido eliminada exitosamente." << endl;
                 break;
             }
-            case 6: {
+            case 8: {
                 blockchain.cascadeRecalculation();
                 cout << "Recalculo en cascada completado." << endl;
                 cout << "Blockchain recalculada:" << endl;
                 blockchain.printBlockchain();
                 break;
             }
-            case 7: {
+            case 9: {
                 string filePath;
                 cout << "Ingrese path del archivo: ";
                 cin.ignore();
@@ -116,7 +130,7 @@ int main() {
                 }
                 break;
             }
-            case 8: {
+            case 0: {
                 cout << "Saliendo..." << endl;
                 return 0;
             }
