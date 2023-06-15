@@ -118,6 +118,11 @@ class BlockChain {
             return tree.range_search(begin, end);
         }
 
+        Transaction min_value(){
+            buildMinHeap();
+            return minHeap.getMin();
+        }
+
         /// Recalculo en cascada; valida la blockchain
         void cascadeRecalculation(){
             Node* current = head;
