@@ -1,10 +1,20 @@
 #ifndef AED_PROYECTO_MAXHEAP_H
 #define AED_PROYECTO_MAXHEAP_H
 
+#include <vector>
+using namespace std;
+
 template<typename TK, typename TV>
 class MaxHeap{
+private:
+    vector<pair<TK,TV>> heap;
 public:
     MaxHeap() = default;
+
+    void insert(TK _key, TV _value);
+    TV getMax();
+    void clear();
+
     ~MaxHeap() = default;
 };
 
