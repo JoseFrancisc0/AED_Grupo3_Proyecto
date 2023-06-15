@@ -4,6 +4,7 @@
 #include "avl.h"
 #include "block.h"
 #include "hashtable.h"
+#include "minheap.h"
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
@@ -22,6 +23,7 @@ class BlockChain {
         Node *head = nullptr;
         HashTable<string, Transaction> table;
         AVL<string, Transaction> tree;
+        MinHeap<string, Transaction> minHeap;
 
         /// Construye el hash tabla
         void buildHashTable(){
@@ -41,6 +43,17 @@ class BlockChain {
             Node* current = head;
             while(current != nullptr){
                 tree.insert(current->block.getBlockhash(), current->block.getTransaction());
+                current = current->next;
+            }
+        }
+
+        /// Construye el MinHeap
+        void buildMinHeap(){
+            minHeap.clear();
+
+            Node* current = head;
+            while(current != nullptr){
+                minHeap.insert(current->block.getBlockhash(), current->block.getTransaction());
                 current = current->next;
             }
         }
