@@ -4,6 +4,7 @@
 #include "avl.h"
 #include "block.h"
 #include "hashtable.h"
+#include "maxheap.h"
 #include "minheap.h"
 #include <fstream>
 #include <sstream>
@@ -23,6 +24,7 @@ class BlockChain {
         Node *head = nullptr;
         HashTable<string, Transaction> table;
         AVL<string, Transaction> tree;
+        MaxHeap<string, Transaction> maxHeap;
         MinHeap<string, Transaction> minHeap;
 
         /// Construye el hash tabla
@@ -43,6 +45,17 @@ class BlockChain {
             Node* current = head;
             while(current != nullptr){
                 tree.insert(current->block.getBlockhash(), current->block.getTransaction());
+                current = current->next;
+            }
+        }
+
+        /// Construye el MaxHeap
+        void buildMaxHeap(){
+            maxHeap.clear();
+
+            Node* current = head;
+            while(current != nullptr){
+                minHeap.insert(current->block.getBlockhash(), current->block.getTransaction());
                 current = current->next;
             }
         }
@@ -116,6 +129,11 @@ class BlockChain {
         vector<Transaction> range_search(const string& begin, const string& end){
             buildAVL();
             return tree.range_search(begin, end);
+        }
+
+        Transaction max_value(){
+            buildMaxHeap();
+            return maxHeap.getMax();
         }
 
         Transaction min_value(){
