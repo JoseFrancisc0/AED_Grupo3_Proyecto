@@ -17,13 +17,15 @@ private:
 
     STNode* root;
 public:
-    SuffixTree() = default;
+    SuffixTree() : root(nullptr) {};
 
     void insert(string _str);
     vector<string> search(string _pattern);
     void clear();
 
-    ~SuffixTree() = default;
+    ~SuffixTree(){
+        clear();
+    };
 };
 
 #endif //AED_PROYECTO_SUFFIXTREE_H
