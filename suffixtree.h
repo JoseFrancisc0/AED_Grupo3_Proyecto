@@ -8,8 +8,21 @@ using namespace std;
 
 class SuffixTree{
 private:
+    struct STNode{
+        unordered_map<char, STNode*> children;
+        bool endPattern;
+
+        STNode() : endPattern(false);
+    };
+
+    STNode* root;
 public:
     SuffixTree() = default;
+
+    void insert(string _str);
+    vector<string> search(string _pattern);
+    void clear();
+
     ~SuffixTree() = default;
 };
 
