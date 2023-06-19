@@ -30,7 +30,24 @@ private:
 public:
     SuffixTree() : root(nullptr) {};
 
-    void insert(string _str);
+    void insert(string _str){
+        _str += "$";
+
+        for(int i=0; i<_str.length(); i++){
+            string suffix = _str.substr(i);
+            STNode* current = root;
+
+            for(char c :suffix){
+                if(current->children.find(c) == current->children.end())
+                    current->children[c] = new STNode();
+
+                current = current->children[c];
+            }
+
+            current->endPattern = true;
+        }
+    }
+
     vector<string> search(string _pattern);
 
     void clear(){
