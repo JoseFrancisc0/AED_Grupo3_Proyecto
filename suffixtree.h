@@ -17,6 +17,19 @@ private:
 
     STNode* root;
 
+    void dfs(STNode* node, string pattern, string currMatch, vector<string>& matches){
+        if(node->endPattern)
+            matches.push_back(currMatch);
+
+        for(auto& pair : node->children){
+            char c = pair.first;
+            STNode* child = pair.second;
+
+            string nextMatch = currMatch + c;
+            dfs(child, pattern, nextMatch, matches);
+        }
+    }
+
     void clearHelper(STNode* node){
         if(node == nullptr)
             return;
@@ -48,7 +61,23 @@ public:
         }
     }
 
-    vector<string> search(string _pattern);
+    vector<string> search(string _pattern){
+        vector<string> matches;
+
+        STNode* current = root;
+        string pattern = _pattern + "$";
+
+        for(char c : pattern){
+            if(current->children.find(c) == current->children.end())
+                return matches;
+
+            current = current->children[c];
+        }
+
+        dfs(current, _pattern, "", matches);
+
+        return matches;
+    }
 
     void clear(){
         clearHelper(root);
