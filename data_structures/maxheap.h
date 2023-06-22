@@ -7,40 +7,40 @@ using namespace std;
 
 template<typename TK, typename TV>
 class MaxHeap{
-private:
-    vector<pair<TK,TV>> heap;
+    private:
+        vector<pair<TK,TV>> heap;
 
-    int parent(int i){
-        return (i - 1)/2;
-    }
-
-    void heapifyUp(int i){
-        while(i > 0 && heap[parent(i)].first < heap[i].first){
-            swap(heap[i], heap[parent(i)]);
-            i = parent(i);
+        int parent(int i){
+            return (i - 1)/2;
         }
-    }
-public:
-    MaxHeap() = default;
 
-    void insert(TK _key, TV _value){
-        heap.emplace_back(_key, _value);
-        int index = heap.size() - 1;
-        heapifyUp(index);
-    }
+        void heapifyUp(int i){
+            while(i > 0 && heap[parent(i)].first < heap[i].first){
+                swap(heap[i], heap[parent(i)]);
+                i = parent(i);
+            }
+        }
+    public:
+        MaxHeap() = default;
 
-    TV getMax(){
-        if(heap.empty())
-            throw std::out_of_range("MinHeap Empty");
+        void insert(TK _key, TV _value){
+            heap.emplace_back(_key, _value);
+            int index = heap.size() - 1;
+            heapifyUp(index);
+        }
 
-        return heap[0].second;
-    };
+        TV getMax(){
+            if(heap.empty())
+                throw std::out_of_range("MinHeap Empty");
 
-    void clear(){
-        heap.clear();
-    }
+            return heap[0].second;
+        };
 
-    ~MaxHeap() = default;
+        void clear(){
+            heap.clear();
+        }
+
+        ~MaxHeap() = default;
 };
 
 #endif //MAXHEAP_H
