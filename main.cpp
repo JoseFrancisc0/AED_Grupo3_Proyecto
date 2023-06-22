@@ -25,15 +25,16 @@ int main() {
         cout << "3. Busqueda singular" << endl;
         cout << "4. Busqueda por rango" << endl;
         cout << "5: Busqueda por prefijo" << endl;
-        cout << "6. Maximo valor" << endl;
-        cout << "7. Minimo valor" << endl;
-        cout << "8. Eliminar transaccion" << endl;
-        cout << "9. Recalculo en cascada" << endl;
-        cout << "10. Cargar datos" << endl;
+        cout << "6: Busqueda por patron" << endl;
+        cout << "7. Maximo valor" << endl;
+        cout << "8. Minimo valor" << endl;
+        cout << "9. Eliminar transaccion" << endl;
+        cout << "10. Recalculo en cascada" << endl;
+        cout << "11. Cargar datos" << endl;
         cout << '\n';
         cout << "0. Salir" << endl;
         cout << '\n';
-        cout << "Ingrese opcion (0-10): ";
+        cout << "Ingrese opcion (0-11): ";
         cin >> choice;
 
         switch (choice) {
@@ -103,18 +104,31 @@ int main() {
                 }
             }
             case 6: {
+                string pattern;
+                cout << "Ingrese patron del Hash: " << endl;
+                cin.ignore();
+                getline(cin, pattern);
+
+                vector<Transaction> result = blockchain.contains(pattern);
+                cout << "Transacciones encontradas" << endl;
+                for(auto item : result){
+                    item.printTransaction();
+                    cout << endl;
+                }
+            }
+            case 7: {
                 Transaction result = blockchain.max_value();
                 cout << "Transaccion encontrada: " << endl;
                 result.printTransaction();
                 break;
             }
-            case 7: {
+            case 8: {
                 Transaction result = blockchain.min_value();
                 cout << "Transaccion encontrada: " << endl;
                 result.printTransaction();
                 break;
             }
-            case 8: {
+            case 9: {
                 int index;
                 cout << "Ingrese index: ";
                 cin >> index;
@@ -123,14 +137,14 @@ int main() {
                 cout << "La transaccion ha sido eliminada exitosamente." << endl;
                 break;
             }
-            case 9: {
+            case 10: {
                 blockchain.cascadeRecalculation();
                 cout << "Recalculo en cascada completado." << endl;
                 cout << "Blockchain recalculada:" << endl;
                 blockchain.printBlockchain();
                 break;
             }
-            case 10: {
+            case 11: {
                 string filePath;
                 cout << "Ingrese path del archivo: ";
                 cin.ignore();
