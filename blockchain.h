@@ -82,7 +82,7 @@ class BlockChain {
 
             Node* current = head;
             while(current != nullptr){
-                minHeap.insert(current->block.getBlockhash(), current->block.getTransaction());
+                maxHeap.insert(current->block.getBlockhash(), current->block.getTransaction());
                 current = current->next;
             }
         }
