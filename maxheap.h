@@ -1,5 +1,5 @@
-#ifndef AED_PROYECTO_MAXHEAP_H
-#define AED_PROYECTO_MAXHEAP_H
+#ifndef MAXHEAP_H
+#define MAXHEAP_H
 
 #include <stdexcept>
 #include <vector>
@@ -43,4 +43,4 @@ public:
     ~MaxHeap() = default;
 };
 
-#endif //AED_PROYECTO_MAXHEAP_H
+#endif //MAXHEAP_H
