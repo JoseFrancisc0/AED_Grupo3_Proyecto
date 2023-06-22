@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "blockchain.h"
+#include "blockchain_files/blockchain.h"
 
 using namespace std;
 
