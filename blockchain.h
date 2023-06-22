@@ -6,6 +6,7 @@
 #include "hashtable.h"
 #include "maxheap.h"
 #include "minheap.h"
+#include "suffixtree.h"
 #include "trie.h"
 #include <fstream>
 #include <sstream>
@@ -26,6 +27,7 @@ class BlockChain {
         HashTable<string, Transaction> table;
         AVL<string, Transaction> tree;
         Trie trie;
+        SuffixTree sTree;
         MaxHeap<string, Transaction> maxHeap;
         MinHeap<string, Transaction> minHeap;
 
@@ -58,6 +60,17 @@ class BlockChain {
             Node* current = head;
             while(current != nullptr){
                 trie.insert(current->block.getBlockhash());
+                current = current->next;
+            }
+        }
+
+        /// Construye el suffix tree
+        void buildSuffixTree(){
+            sTree.clear(); /// Reset suffix tree
+
+            Node* current = head;
+            while(current != nullptr){
+                sTree.insert((current->block.getBlockhash()));
                 current = current->next;
             }
         }
@@ -148,6 +161,20 @@ class BlockChain {
         vector<Transaction> starts_with(const string& prefix){
             buildTrie();
             vector<string> hashes = trie.search(prefix);   /// Todos los hashes con el prefijo
+
+            buildHashTable(); /// Busquedas O(1) con los hashes encontrados
+            vector<Transaction> found;
+
+            for(const auto& hash : hashes)
+                found.push_back(table.search(hash));
+
+            return found;
+        }
+
+        /// Contains X: Suffix Tree
+        vector<Transaction> contains(const string& pattern){
+            buildSuffixTree();
+            vector<string> hashes = sTree.search(pattern); /// Todos los hashes con el patron
 
             buildHashTable(); /// Busquedas O(1) con los hashes encontrados
             vector<Transaction> found;
