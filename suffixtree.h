@@ -1,5 +1,5 @@
-#ifndef AED_PROYECTO_SUFFIXTREE_H
-#define AED_PROYECTO_SUFFIXTREE_H
+#ifndef SUFFIXTREE_H
+#define SUFFIXTREE_H
 
 #include <unordered_map>
 #include <vector>
@@ -58,4 +58,4 @@ public:
     };
 };
 
-#endif //AED_PROYECTO_SUFFIXTREE_H
+#endif //SUFFIXTREE_H
