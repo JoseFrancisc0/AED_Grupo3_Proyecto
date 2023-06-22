@@ -23,7 +23,7 @@ class BlockChain {
             Node(Block _block) : block(_block) {};
         };
 
-        Node *head = nullptr;
+        Node* head = nullptr;
 
         HashTable<string, Transaction> table;
         AVL<string, Transaction> tree;
@@ -198,26 +198,24 @@ class BlockChain {
             return minHeap.getMin();
         }
 
-        /// Recalculo en cascada; valida la blockchain
-        void cascadeRecalculation(){
+        void modifyTransaction(const string& hash, string newClient, double newAmount, string newLocation){
             Node* current = head;
 
-            /// Si head es eliminado, nuevo head pasa a ser Genesis block
-            if(!current->block.getPrevhash().empty())
-                current->block.setPrevHash("");
-
+            /// Recorrer la blockchain
             while(current != nullptr){
-                Block& block = current->block;
+                if(current->block.getBlockhash() == hash){ /// Bloque correcto
+                    /// Si hay campos sin modificar
+                    if(newClient.empty())
+                        newClient = current->block.getTransaction().getClient();
+                    if(newAmount == 0.0)
+                        newAmount = current->block.getTransaction().getAmount();
+                    if(newLocation.empty())
+                        newLocation = current->block.getTransaction().getLocation();
 
-                Node* nextNode = current->next;
-                if(nextNode != nullptr){
-                    Block& nextBlock = nextNode->block;
-                    nextBlock.setPrevHash(block.getBlockhash());
+                    Transaction newTransaction(newClient, newLocation, newAmount);
+
+                    current->block.setTransaction(newTransaction);
                 }
-
-                block.mineBlock();
-
-                current = current->next;
             }
         }
 
@@ -245,6 +243,29 @@ class BlockChain {
 
             prev->next = current->next;
             delete current;
+        }
+
+        /// Recalculo en cascada; valida la blockchain
+        void cascadeRecalculation(){
+            Node* current = head;
+
+            /// Si head es eliminado, nuevo head pasa a ser Genesis block
+            if(!current->block.getPrevhash().empty())
+                current->block.setPrevHash("");
+
+            while(current != nullptr){
+                Block& block = current->block;
+
+                Node* nextNode = current->next;
+                if(nextNode != nullptr){
+                    Block& nextBlock = nextNode->block;
+                    nextBlock.setPrevHash(block.getBlockhash());
+                }
+
+                block.mineBlock();
+
+                current = current->next;
+            }
         }
 
         /// Carga de datos por csv : TESTED
