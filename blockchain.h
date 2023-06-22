@@ -24,6 +24,7 @@ class BlockChain {
         };
 
         Node *head = nullptr;
+
         HashTable<string, Transaction> table;
         AVL<string, Transaction> tree;
         Trie trie;
@@ -77,7 +78,7 @@ class BlockChain {
 
         /// Construye el MaxHeap
         void buildMaxHeap(){
-            maxHeap.clear();
+            maxHeap.clear(); /// Reset max heap
 
             Node* current = head;
             while(current != nullptr){
@@ -88,7 +89,7 @@ class BlockChain {
 
         /// Construye el MinHeap
         void buildMinHeap(){
-            minHeap.clear();
+            minHeap.clear(); /// Reset min heap
 
             Node* current = head;
             while(current != nullptr){
@@ -185,11 +186,13 @@ class BlockChain {
             return found;
         }
 
+        /// Max value of: Max Heap
         Transaction max_value(){
             buildMaxHeap();
             return maxHeap.getMax();
         }
 
+        /// Min value of: Min Heap
         Transaction min_value(){
             buildMinHeap();
             return minHeap.getMin();
@@ -244,7 +247,7 @@ class BlockChain {
             delete current;
         }
 
-        /// Carga de datos por csv : NO TESTEADO TODAVIA
+        /// Carga de datos por csv : TESTED
         void loadFromCSV(const string& csv){
             ifstream file(csv);
             if(!file.is_open())
