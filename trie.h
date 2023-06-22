@@ -1,5 +1,5 @@
-#ifndef AED_PROYECTO_TRIE_H
-#define AED_PROYECTO_TRIE_H
+#ifndef TRIE_H
+#define TRIE_H
 
 #include <stdexcept>
 #include <string>
@@ -84,4 +84,4 @@ public:
     ~Trie() = default;
 };
 
-#endif //AED_PROYECTO_TRIE_H
+#endif //TRIE_H
