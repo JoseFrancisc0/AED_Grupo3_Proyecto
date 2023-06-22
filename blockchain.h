@@ -155,7 +155,7 @@ class BlockChain {
         /// Between X and Y: AVL Tree
         vector<Transaction> range_search(const string& begin, const string& end){
             buildAVL();
-            return tree.range_search(begin, end);
+            return tree.search(begin, end);
         }
 
         /// Starts with X: Trie

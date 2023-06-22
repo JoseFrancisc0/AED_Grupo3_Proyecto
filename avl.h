@@ -1,5 +1,5 @@
-#ifndef AED_PROYECTO_AVL_H
-#define AED_PROYECTO_AVL_H
+#ifndef AVL_H
+#define PROYECTO_AVL_H
 
 #include <iostream>
 #include <vector>
@@ -114,7 +114,7 @@ class AVL{
             insert(this->root, key, value);
         }
 
-        vector<TV> range_search(TK begin, TK end){
+        vector<TV> search(TK begin, TK end){
             vector<TV> result;
             range_search(this->root, begin, end, result);
             return result;
@@ -132,4 +132,4 @@ class AVL{
         }
 };
 
-#endif //AED_PROYECTO_AVL_H
+#endif //AVL_H
