@@ -10,32 +10,14 @@ class SuffixTree{
 private:
     struct STNode{
         unordered_map<char, STNode*> children;
-        bool endPattern;
-
-        STNode() : endPattern(false) {};
+        vector<string> words;
     };
 
     STNode* root;
 
-    void dfs(STNode* node, string pattern, string currMatch, vector<string>& matches){
-        if(node->endPattern)
-            matches.push_back(currMatch);
-
-        for(auto& pair : node->children){
-            char c = pair.first;
-            STNode* child = pair.second;
-
-            string nextMatch = currMatch + c;
-            dfs(child, pattern, nextMatch, matches);
-        }
-    }
-
-    void clearHelper(STNode* node){
-        if(node == nullptr)
-            return;
-
-        for(auto& pair : node->children)
-            clearHelper(pair.second);
+    void clear(STNode* node){
+        for(auto child : node->children)
+            clear(child.second);
 
         delete node;
     }
@@ -44,48 +26,36 @@ public:
     SuffixTree() : root(nullptr) {};
 
     void insert(string _str){
-        _str += "$";
-
-        for(int i=0; i<_str.length(); i++){
-            string suffix = _str.substr(i);
+        for (size_t i = 0; i < _str.length(); i++) {
             STNode* current = root;
-
-            for(char c :suffix){
-                if(current->children.find(c) == current->children.end())
-                    current->children[c] = new STNode();
-
-                current = current->children[c];
+            for (size_t j = i; j < _str.length(); j++) {
+                if (current->children.find(_str[j]) == current->children.end()) {
+                    current->children[_str[j]] = new STNode();
+                }
+                current = current->children[_str[j]];
+                current->words.push_back(_str);
             }
-
-            current->endPattern = true;
         }
     }
 
     vector<string> search(string _pattern){
-        vector<string> matches;
-
         STNode* current = root;
-        string pattern = _pattern + "$";
-
-        for(char c : pattern){
-            if(current->children.find(c) == current->children.end())
-                return matches;
-
+        for (char c : _pattern) {
+            if (current->children.find(c) == current->children.end()) {
+                return {}; // pattern not found
+            }
             current = current->children[c];
         }
-
-        dfs(current, _pattern, "", matches);
-
-        return matches;
+        return current->words;
     }
 
     void clear(){
-        clearHelper(root);
-        root = nullptr;
+        clear(root);
+        root = new STNode();
     }
 
     ~SuffixTree(){
-        clear();
+        clear(root);
     };
 };
 
