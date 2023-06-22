@@ -1,5 +1,5 @@
-#ifndef AED_PROYECTO_MINHEAP_H
-#define AED_PROYECTO_MINHEAP_H
+#ifndef MINHEAP_H
+#define MINHEAP_H
 
 #include <stdexcept>
 #include <vector>
@@ -44,4 +44,4 @@ class MinHeap{
         ~MinHeap() = default;
 };
 
-#endif //AED_PROYECTO_MINHEAP_H
+#endif //MINHEAP_H
