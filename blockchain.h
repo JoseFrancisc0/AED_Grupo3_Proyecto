@@ -202,21 +202,23 @@ class BlockChain {
             Node* current = head;
 
             /// Recorrer la blockchain
-            while(current != nullptr){
-                if(current->block.getBlockhash() == hash){ /// Bloque correcto
-                    /// Si hay campos sin modificar
-                    if(newClient.empty())
-                        newClient = current->block.getTransaction().getClient();
-                    if(newAmount == 0.0)
-                        newAmount = current->block.getTransaction().getAmount();
-                    if(newLocation.empty())
-                        newLocation = current->block.getTransaction().getLocation();
+            while (current != nullptr && current->block.getBlockhash() != hash)
+                current = current->next;
 
-                    Transaction newTransaction(newClient, newLocation, newAmount);
+            if(current != nullptr) {
+                if (newClient.empty())
+                    newClient = current->block.getTransaction().getClient();
+                if (newAmount == 0.0)
+                    newAmount = current->block.getTransaction().getAmount();
+                if (newLocation.empty())
+                    newLocation = current->block.getTransaction().getLocation();
 
-                    current->block.setTransaction(newTransaction);
-                }
+                Transaction newTransaction(newClient, newLocation, newAmount);
+
+                current->block.setTransaction(newTransaction);
             }
+            else
+                throw std::out_of_range("Block does not exist");
         }
 
         /// Elimina registros por indice: NO HACE RECALCULO EN CASCADA
