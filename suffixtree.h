@@ -1,7 +1,6 @@
 #ifndef AED_PROYECTO_SUFFIXTREE_H
 #define AED_PROYECTO_SUFFIXTREE_H
 
-#include <stdexcept>
 #include <unordered_map>
 #include <vector>
 using namespace std;
@@ -25,22 +24,22 @@ private:
 public:
     SuffixTree() : root(nullptr) {};
 
-    void insert(string _str){
-        for (size_t i = 0; i < _str.length(); i++) {
+    void insert(string str){
+        for (size_t i = 0; i < str.length(); i++) {
             STNode* current = root;
-            for (size_t j = i; j < _str.length(); j++) {
-                if (current->children.find(_str[j]) == current->children.end()) {
-                    current->children[_str[j]] = new STNode();
+            for (size_t j = i; j < str.length(); j++) {
+                if (current->children.find(str[j]) == current->children.end()) {
+                    current->children[str[j]] = new STNode();
                 }
-                current = current->children[_str[j]];
-                current->words.push_back(_str);
+                current = current->children[str[j]];
+                current->words.push_back(str);
             }
         }
     }
 
-    vector<string> search(string _pattern){
+    vector<string> search(string pattern){
         STNode* current = root;
-        for (char c : _pattern) {
+        for (char c : pattern) {
             if (current->children.find(c) == current->children.end()) {
                 return {}; // pattern not found
             }
