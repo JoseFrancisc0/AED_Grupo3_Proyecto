@@ -12,6 +12,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <vector>
+#include <unordered_map>
 using namespace std;
 
 class BlockChain {
@@ -219,6 +220,98 @@ class BlockChain {
             }
             else
                 throw std::out_of_range("Block does not exist");
+        }
+
+        /// Calculo Transaccional : cantidad por cliente
+        double calculateAmountPerClient(string client){
+            double amount = 0;
+            Node* current = head;
+
+            while(current != nullptr){
+                if(current->block.getTransaction().getClient() == client)
+                    amount += current->block.getTransaction().getAmount();
+
+                current = current->next;
+            }
+
+            return amount;
+        }
+
+        /// Calculo Transaccional : cantidad por lugar
+        double calculateAmountPerLocation(string location){
+            double amount = 0;
+            Node* current = head;
+
+            while(current != nullptr){
+                if(current->block.getTransaction().getLocation() == location)
+                    amount += current->block.getTransaction().getAmount();
+
+                current = current->next;
+            }
+
+            return amount;
+        }
+
+        /// Calculo Transaccional : el cliente con mas plata
+        string getRichestClient(){
+            unordered_map<string, double> clientList;
+            Node* current = head;
+
+            /// Mapeando los clientes
+            while(current != nullptr) {
+                const Transaction& tr = current->block.getTransaction();
+                if(tr.getAmount() < 0){
+                    string client = tr.getClient();
+                    double amount = tr.getAmount();
+                    clientList[client] += amount;
+                }
+
+                current = current->next;
+            }
+
+            // Encontrar el cliente con mas plata
+            string richest;
+            double maxAmount = 0.0;
+
+            for(const auto& entry : clientList){
+                if(entry.second > maxAmount){
+                    richest = entry.first;
+                    maxAmount = entry.second;
+                }
+            }
+
+            return richest;
+        }
+
+        /// Calculo Transaccional : el lugar con mas plata
+        string getRichestLocation(){
+            unordered_map<string, double> locationList;
+            Node* current = head;
+
+            /// Mapeando los clientes
+            while(current != nullptr) {
+                const Transaction& tr = current->block.getTransaction();
+                if(tr.getAmount() < 0){
+                    string location = tr.getLocation();
+                    double amount = tr.getAmount();
+                    locationList[location] += amount;
+                }
+
+                current = current->next;
+            }
+
+            // Encontrar el cliente con mas plata
+            string richest;
+            double maxAmount = 0.0;
+
+            for(const auto& entry : locationList){
+                if(entry.second > maxAmount){
+                    richest = entry.first;
+                    maxAmount = entry.second;
+                }
+            }
+
+            return richest;
         }
 
         /// Elimina registros por indice: NO HACE RECALCULO EN CASCADA
