@@ -8,6 +8,11 @@ enable_testing()
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 
+# For the Nana Library
+set(NANA_ROOT_DIR "C:/nana") # Reemplaze por el directorio de nana
+set(NANA_BINARY_DIR "${NANA_ROOT_DIR}/build")
+add_subdirectory(${NANA_ROOT_DIR} ${NANA_BINARY_DIR})
+
 add_executable(AED_Proyecto main.cpp
                             blockchain_files/transaction.h
                             blockchain_files/block.h
@@ -21,6 +26,9 @@ add_executable(AED_Proyecto main.cpp
 
 # Link OpenSSL
 target_link_libraries(AED_Proyecto ${OPENSSL_LIBRARIES})
+
+# Link Nana
+target_link_libraries(AED_Proyecto nana)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
