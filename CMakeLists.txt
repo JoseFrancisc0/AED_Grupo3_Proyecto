@@ -22,7 +22,8 @@ add_executable(AED_Proyecto main.cpp
                             data_structures/trie.h
                             data_structures/suffixtree.h
                             data_structures/maxheap.h
-                            data_structures/minheap.h)
+                            data_structures/minheap.h
+                            GUI_files/menu.h)
 
 # Link OpenSSL
 target_link_libraries(AED_Proyecto ${OPENSSL_LIBRARIES})
