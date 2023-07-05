@@ -25,6 +25,7 @@ class BlockChain {
         };
 
         Node* head = nullptr;
+        vector<Block> forGUI; /// Vector of blocks for the GUI representation
 
         HashTable<string, Transaction> table;
         AVL<string, Transaction> tree;
@@ -395,6 +396,17 @@ class BlockChain {
                 i++;
             }
         }
+
+        vector<Block> constructGUIBlockVector(){
+            Node* current = head;
+            while(current != nullptr) {
+                forGUI.push_back(current->block);
+                current = current->next;
+            }
+
+            return forGUI;
+        }
+
 };
 
 #endif //BLOCKCHAIN_H
