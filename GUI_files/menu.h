@@ -2,9 +2,12 @@
 #define MENU_H
 
 #include "../blockchain_files/blockchain.h"
+#include <string>
+#include <vector>
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/widgets/button.hpp>
+#include <nana/gui/widgets/listbox.hpp>
 
 /// Aspecto básico de todas las ventanas
 class GUI : public nana::form{
@@ -54,6 +57,31 @@ public:
     bcMenu(){
         see.create(*this, nana::rectangle(325, 305, 150, 30));
         see.caption("Ver blockchain");
+        see.events().click([this](){
+            nana::listbox lb(*this, nana::rectangle(10,10,300,200));
+
+            /// Headers de la lista
+            lb.append_header("i");
+            lb.append_header("BlockHash");
+            lb.append_header("PreviousHash");
+            lb.append_header("Client");
+            lb.append_header("Amount");
+            lb.append_header("Location");
+            lb.append_header("Date");
+
+            /// Get all blocks for GUI
+            std::vector<Block> blocks = _blockchain.constructGUIBlockVector();
+            for(int i=0; i<blocks.size(); i++){
+                auto _time = blocks[i].getTransaction().getDate();
+                /// Para el tiempo
+                char buffer[80];
+                struct tm* timeinfo;
+                timeinfo = localtime(&_time);
+                std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
+
+                lb.at(0).append({std::to_string(i+1), blocks[i].getBlockhash(), blocks[i].getPrevhash(), blocks[i].getTransaction().getClient(), std::to_string(blocks[i].getTransaction().getAmount()), buffer});
+            };
+        });
 
         add.create(*this, nana::rectangle(325,345, 150, 30));
         add.caption("Añadir transacción");
