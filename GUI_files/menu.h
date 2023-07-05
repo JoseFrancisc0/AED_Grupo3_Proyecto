@@ -4,239 +4,193 @@
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/widgets/button.hpp>
-using namespace nana;
 
-void mainMenu(); // Forward Declarator
+/// Aspecto básico de todas las ventanas
+class GUI : public nana::form{
+private:
+    nana::label title;
+    nana::label header;
+    nana::label foot;
 
-void searchMenu(){
-    /// Window
-    form fm(rectangle(0,0,800,600));
-    fm.caption("BlockChain App");
-    fm.bgcolor(colors::alice_blue);
+public:
+    GUI() : nana::form(nana::API::make_center(800,600), appear::decorate<appear::taskbar>() ){
+        this->caption(("Blockchain APP"));
 
-    /// Header
-    label header(fm, rectangle(0,0,800,50));
-    header.format(true);
-    header.bgcolor(colors::dark_blue);
+        header.create(*this, nana::rectangle(0, 0, 800, 50));
+        header.bgcolor(nana::colors::dark_blue);
 
-    /// Title
-    label title(fm, rectangle(200,5,400,40));
-    title.format(true);
-    title.caption("<size = 25 red font=\"Consolas\"> BlockChain App");
-    title.text_align(align::center, align_v::center);
-    title.bgcolor(colors::aquamarine);
+        title.create(*this, nana::rectangle(200, 5, 400, 40));
+        title.format(true);
+        title.caption("<size = 25 red font=\"Consolas\"> BlockChain App");
+        title.text_align(nana::align::center, nana::align_v::center);
+        title.bgcolor(nana::colors::aquamarine);
 
-    /// Buttons
-    button directSearch(fm, rectangle(325,265, 150, 30));
-    directSearch.caption("Búsqueda directa");
-    directSearch.events().click(API::exit);
+        foot.create(*this, nana::rectangle(0, 550, 800, 50));
+        foot.bgcolor(nana::colors::dark_blue);
+    };
 
-    button rangeSearch(fm, rectangle(325,305, 150, 30));
-    rangeSearch.caption("Búsqueda por rango");
-    rangeSearch.events().click(API::exit);
+    void open(){
+        this->show();
+        nana::exec();
+    }
+};
 
-    button prefixSearch(fm, rectangle(325,345, 150, 30));
-    prefixSearch.caption("Búsqueda por prefijo");
-    prefixSearch.events().click(API::exit);
+void backToMenu(); /// Forward declarator
 
-    button suffixSearch(fm, rectangle(325,385, 150, 30));
-    suffixSearch.caption("Búsqueda por patrón");
-    suffixSearch.events().click(API::exit);
+/// Ventana del menu de la blockchain
+class bcMenu : public GUI {
+private:
+    nana::button see;
+    nana::button add;
+    nana::button modify;
+    nana::button erase;
+    nana::button recalculate;
+    nana::button back;
 
-    button minValue(fm, rectangle(325,425, 150, 30));
-    minValue.caption("Valor máximo de hash");
-    minValue.events().click(API::exit);
+public:
+    bcMenu(){
+        see.create(*this, nana::rectangle(325, 305, 150, 30));
+        see.caption("Ver blockchain");
 
-    button maxValue(fm, rectangle(325,465, 150, 30));
-    maxValue.caption("Valor mínimo de hash");
-    maxValue.events().click(API::exit);
+        add.create(*this, nana::rectangle(325,345, 150, 30));
+        add.caption("Añadir transacción");
 
-    button back(fm,rectangle(325,505, 150, 30));
-    back.caption("Volver al menú");
-    back.events().click([&](){
-        fm.hide();
-        mainMenu();
-    });
+        modify.create(*this, nana::rectangle(325,385, 150, 30));
+        modify.caption("Modificar bloque");
 
-    /// Footnote
-    label foot(fm, rectangle(0,550,800,50));
-    foot.format(true);
-    foot.bgcolor(colors::dark_blue);
+        erase.create(*this, nana::rectangle(325,425, 150, 30));
+        erase.caption("Eliminar bloque");
 
-    fm.show();
-    exec();
+        recalculate.create(*this, nana::rectangle(325,465, 150, 30));
+        recalculate.caption("Recálculo en cascada");
+
+        back.create(*this, nana::rectangle(325,505, 150, 30));
+        back.caption("Volver al menú principal");
+        back.events().click([&](){
+            this->hide();
+            backToMenu();
+        });
+    }
+};
+
+/// Ventana del menu de criterios de busqueda
+class searchMenu : public GUI {
+private:
+    nana::button direct;
+    nana::button range;
+    nana::button prefix;
+    nana::button pattern;
+    nana::button max;
+    nana::button min;
+    nana::button back;
+
+public:
+    searchMenu(){
+        direct.create(*this, nana::rectangle(325, 265, 150, 30));
+        direct.caption("Búsqueda directa");
+
+        range.create(*this, nana::rectangle(325,305, 150, 30));
+        range.caption("Búsqueda por rango");
+
+        prefix.create(*this, nana::rectangle(325,345, 150, 30));
+        prefix.caption("Búsqueda por prefijo");
+
+        pattern.create(*this, nana::rectangle(325,385, 150, 30));
+        pattern.caption("Búsqueda por patrón");
+
+        max.create(*this, nana::rectangle(325,425, 150, 30));
+        max.caption("Máximo valor (de hash)");
+
+        min.create(*this, nana::rectangle(325,465, 150, 30));
+        min.caption("Mínimo valor (de hash)");
+
+        back.create(*this, nana::rectangle(325,505, 150, 30));
+        back.caption("Volver al menú principal");
+        back.events().click([&](){
+            this->hide();
+            backToMenu();
+        });
+    }
+};
+
+/// Ventana del menu del calculos transaccionales
+class calculationsMenu : public GUI {
+private:
+    nana::button moneyOfClient;
+    nana::button moneyOfPlace;
+    nana::button richestClient;
+    nana::button richestLocation;
+    nana::button back;
+
+public:
+    calculationsMenu(){
+        moneyOfClient.create(*this, nana::rectangle(325, 305, 150, 30));
+        moneyOfClient.caption("Dinero recaudado por cliente");
+
+        moneyOfPlace.create(*this, nana::rectangle(325,345, 150, 30));
+        moneyOfPlace.caption("Dinero movido en lugar");
+
+        richestClient.create(*this, nana::rectangle(325,385, 150, 30));
+        richestClient.caption("Cliente con más dinero recaudado");
+
+        richestLocation.create(*this, nana::rectangle(325,425, 150, 30));
+        richestLocation.caption("Lugar con más dinero movido");
+
+        back.create(*this, nana::rectangle(325,465, 150, 30));
+        back.caption("Volver al menú principal");
+        back.events().click([&](){
+            this->hide();
+            backToMenu();
+        });
+    }
+};
+
+/// Ventana del menu principal
+class mainMenu : public GUI {
+private:
+    nana::button blockchain;
+    nana::button loadcsv;
+    nana::button search;
+    nana::button calculations;
+    nana::button quit;
+
+public:
+    mainMenu(){
+        blockchain.create(*this, nana::rectangle(325, 305, 150, 30));
+        blockchain.caption("Mi Blockchain");
+        blockchain.events().click([&](){
+            this->hide();
+            bcMenu().open();
+        });
+
+        loadcsv.create(*this, nana::rectangle(325,345, 150, 30));
+        loadcsv.caption("Cargar CSV");
+
+        search.create(*this, nana::rectangle(325,385, 150, 30));
+        search.caption("Criterios de búsqueda");
+        search.events().click([&](){
+            this->hide();
+            searchMenu().open();
+        });
+
+        calculations.create(*this, nana::rectangle(325,425, 150, 30));
+        calculations.caption("Cálculos Transaccionales");
+        calculations.events().click([&](){
+            this->hide();
+            calculationsMenu().open();
+        });
+
+        quit.create(*this, nana::rectangle(325,465, 150, 30));
+        quit.caption("Cerrar aplicación");
+        quit.events().click(nana::API::exit);
+    }
+};
+
+/// Hack para volver al menu
+void backToMenu(){
+    mainMenu().open();
 }
 
-void calculationsMenu(){
-    /// Window
-    form fm(rectangle(0,0,800,600));
-    fm.caption("BlockChain App");
-    fm.bgcolor(colors::alice_blue);
-
-    /// Header
-    label header(fm, rectangle(0,0,800,50));
-    header.format(true);
-    header.bgcolor(colors::dark_blue);
-
-    /// Title
-    label title(fm, rectangle(200,5,400,40));
-    title.format(true);
-    title.caption("<size = 25 red font=\"Consolas\"> BlockChain App");
-    title.text_align(align::center, align_v::center);
-    title.bgcolor(colors::aquamarine);
-
-    /// Buttons
-    button getRichestClient(fm, rectangle(325,265, 200, 30));
-    getRichestClient.caption("Obtener el cliente con más dinero");
-    getRichestClient.events().click(API::exit);
-
-    button getRichestLocation(fm, rectangle(325,305, 200, 30));
-    getRichestLocation.caption("Obtener el lugar con más dinero");
-    getRichestLocation.events().click(API::exit);
-
-    button moneyPerClient(fm, rectangle(325,345, 200, 30));
-    moneyPerClient.caption("Obtener dinero recaudado por cliente");
-    moneyPerClient.events().click(API::exit);
-
-    button moneyPerLocation(fm, rectangle(325,385, 200, 30));
-    moneyPerLocation.caption("Obtener dinero movido en lugar");
-    moneyPerLocation.events().click(API::exit);
-
-    button back(fm, rectangle(325,425, 200, 30));
-    back.caption("Volver al menú");
-    back.events().click([&](){
-        fm.hide();
-        mainMenu();
-    });
-
-    /// Footnote
-    label foot(fm, rectangle(0,550,800,50));
-    foot.format(true);
-    foot.bgcolor(colors::dark_blue);
-
-    fm.show();
-    exec();
-}
-
-void bcMenu(){
-    /// Window
-    form fm(rectangle(0,0,800,600));
-    fm.caption("BlockChain App");
-    fm.bgcolor(colors::alice_blue);
-
-    /// Header
-    label header(fm, rectangle(0,0,800,50));
-    header.format(true);
-    header.bgcolor(colors::dark_blue);
-
-    /// Title
-    label title(fm, rectangle(200,5,400,40));
-    title.format(true);
-    title.caption("<size = 25 red font=\"Consolas\"> BlockChain App");
-    title.text_align(align::center, align_v::center);
-    title.bgcolor(colors::aquamarine);
-
-    /// Buttons
-    button add(fm, rectangle(325,305, 150, 30));
-    add.caption("Añadir Transacción");
-    add.events().click(API::exit);
-
-    button get(fm, rectangle(325,345, 150, 30));
-    get.caption("Ver Blockchain");
-    get.events().click(API::exit);
-
-    button modify(fm, rectangle(325,385, 150, 30));
-    modify.caption("Modificar Transacción");
-    modify.events().click(API::exit);
-
-    button erase(fm, rectangle(325,425, 150, 30));
-    erase.caption("Eliminar Bloque");
-    erase.events().click(API::exit);
-
-    button cascade(fm, rectangle(325,465, 150, 30));
-    cascade.caption("Recálculo en cascada");
-    cascade.events().click(API::exit);
-
-    button back(fm, rectangle(325,505, 150, 30));
-    back.caption("Volver al menú");
-    back.events().click([&](){
-        fm.hide();
-        mainMenu();
-    });
-
-    /// Footnote
-    label foot(fm, rectangle(0,550,800,50));
-    foot.format(true);
-    foot.bgcolor(colors::dark_blue);
-
-    fm.show();
-    exec();
-}
-
-void mainMenu(){
-    /// Window
-    form fm(rectangle(0,0,800,600));
-    fm.caption("BlockChain App");
-    fm.bgcolor(colors::alice_blue);
-
-    /// Header
-    label header(fm, rectangle(0,0,800,50));
-    header.format(true);
-    header.bgcolor(colors::dark_blue);
-
-    /// Title
-    label title(fm, rectangle(200,5,400,40));
-    title.format(true);
-    title.caption("<size = 25 red font=\"Consolas\"> BlockChain App");
-    title.text_align(align::center, align_v::center);
-    title.bgcolor(colors::aquamarine);
-
-    /// Small graphics
-    drawing dw{fm};
-    dw.draw([](paint::graphics& graph) {
-        graph.rectangle(rectangle(150,125,100,100), true, colors::light_coral);
-        graph.rectangle(rectangle(350,125,100,100), true, colors::light_coral);
-        graph.rectangle(rectangle(550,125,100,100), true, colors::light_coral);
-    });
-
-    /// Buttons
-    button BC(fm, rectangle(325,305, 150, 30));
-    BC.caption("Mi Blockchain");
-    BC.events().click([&](){
-        fm.hide();
-        bcMenu();
-    });
-
-    button load(fm, rectangle(325,345, 150, 30));
-    load.caption("Cargar CSV");
-    load.events().click(API::exit);
-
-    button searches(fm, rectangle(325,385, 150, 30));
-    searches.caption("Criterios de búsqueda");
-    searches.events().click([&](){
-        fm.hide();
-        searchMenu();
-    });
-
-    button calculos(fm, rectangle(325,425, 150, 30));
-    calculos.caption("Cálculos Transaccionales");
-    calculos.events().click([&](){
-        fm.hide();
-        calculationsMenu();
-    });
-
-    button quit(fm, rectangle(325,465, 150, 30));
-    quit.caption("Cerrar aplicación");
-    quit.events().click(API::exit);
-
-    /// Footnote
-    label foot(fm, rectangle(0,550,800,50));
-    foot.format(true);
-    foot.bgcolor(colors::dark_blue);
-
-    fm.show();
-    exec();
-}
 
 
 #endif //MENU_H
