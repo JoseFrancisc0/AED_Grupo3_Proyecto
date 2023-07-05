@@ -1,6 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
+#include "../blockchain_files/blockchain.h"
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/widgets/button.hpp>
@@ -13,6 +14,8 @@ private:
     nana::label foot;
 
 public:
+    BlockChain _blockchain;
+
     GUI() : nana::form(nana::API::make_center(800,600), appear::decorate<appear::taskbar>() ){
         this->caption(("Blockchain APP"));
 
@@ -165,6 +168,26 @@ public:
 
         loadcsv.create(*this, nana::rectangle(325,345, 150, 30));
         loadcsv.caption("Cargar CSV");
+        loadcsv.events().click([this](){
+            nana::inputbox::text path("Ruta del archivo");
+            nana::inputbox filePath(*this,"Ingrese ruta del archivo .csv", "Cargar CSV");
+
+            filePath.verify([&path](nana::window handle){
+                if(path.value().empty()){
+                    nana::msgbox mb(handle, "Ruta inválida");
+                    mb << L"Ingrese una ruta válida.";
+                    mb.show();
+                    return false;
+                }
+
+                return true;
+            });
+
+            if(filePath.show_modal(path)){
+                auto route = path.value();
+                _blockchain.loadFromCSV(route);
+            }
+        });
 
         search.create(*this, nana::rectangle(325,385, 150, 30));
         search.caption("Criterios de búsqueda");
