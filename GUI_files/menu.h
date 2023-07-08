@@ -83,7 +83,7 @@ public:
                 timeinfo = localtime(&_time);
                 std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
 
-                bcListLb.at(0).append({std::to_string(i+1), blocks[i].getBlockhash(), blocks[i].getPrevhash(), blocks[i].getTransaction().getClient(), std::to_string(blocks[i].getTransaction().getAmount()), buffer});
+                bcListLb.at(0).append({std::to_string(i+1), blocks[i].getBlockhash(), blocks[i].getPrevhash(), blocks[i].getTransaction().getClient(), std::to_string(blocks[i].getTransaction().getAmount()), blocks[i].getTransaction().getLocation(), buffer});
             }
 
             bcListWin->show();
@@ -112,6 +112,10 @@ public:
             if(inputTransaction.show_modal(_client, _amount, _location)){
                 Transaction _tr(_client.value(), _location.value(), _amount.value());
                 _blockchain.addTransaction(_tr);
+
+                nana::msgbox mb(*this, "Success!");
+                mb << "La transacción ha sido añadida exitosamente!";
+                mb.show();
             }
         });
 
