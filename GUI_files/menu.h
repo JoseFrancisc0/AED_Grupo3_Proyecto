@@ -121,12 +121,73 @@ public:
 
         modify.create(*this, nana::rectangle(325,385, 150, 30));
         modify.caption("Modificar bloque");
+        modify.events().click([this](){
+            nana::inputbox::text _hash("Hash del bloque a modificar");
+            nana::inputbox::text _client("Nombre del nuevo cliente");
+            nana::inputbox::real _amount("Nueva cantidad de dinero", 0.0, 1, 999, 1);
+            nana::inputbox::text _location("Nuevo lugar de retiro");
+
+            nana::inputbox modifyTransaction(*this, "Ingrese los datos a modificar", "Modificar transacción");
+
+            modifyTransaction.verify([&_hash](nana::window handle){
+                if(_hash.value().empty()){
+                    nana::msgbox mb(handle, "Invalid hash");
+                    mb << "Por favor ingrese un hash válido";
+                    mb.show();
+                    return false;
+                }
+
+                return true;
+            });
+
+            if(modifyTransaction.show_modal(_hash ,_client, _amount, _location)){
+                _blockchain.modifyTransaction(_hash.value(), _client.value(), _amount.value(), _location.value());
+
+                nana::msgbox mb(*this, "Success!");
+                mb << "La transacción ha sido modificada exitosamente! No se olvide de hacer el recálculo en cascada.";
+                mb.show();
+            }
+        });
 
         erase.create(*this, nana::rectangle(325,425, 150, 30));
         erase.caption("Eliminar bloque");
+        erase.events().click([this](){
+            nana::inputbox::integer _index("Indice del bloque a eliminar", 0, 0, 99, 1);
+
+            nana::inputbox eraseTransaction(*this, "Ingrese el indice del bloque a eliminar (indice = i-1)", "Eliminar transacción");
+
+            int count = _blockchain.getBlockCount();
+
+            eraseTransaction.verify([&_index, &count](nana::window handle){
+                if(_index.value() < 0 || _index.value() > count){
+                    nana::msgbox mb(handle, "Invalid index");
+                    mb << "Ingrese un índice válido para el bloque a eliminar";
+                    mb.show();
+
+                    return false;
+                }
+
+                return true;
+            });
+
+            if(eraseTransaction.show_modal(_index)){
+                _blockchain.deleteRecordatIndex(_index.value());
+
+                nana::msgbox mb(*this, "Success!");
+                mb << "El bloque ha sido eliminado exitosamente! No se olvide del recálculo en cascada";
+                mb.show();
+            }
+        });
 
         recalculate.create(*this, nana::rectangle(325,465, 150, 30));
         recalculate.caption("Recálculo en cascada");
+        recalculate.events().click([this](){
+            _blockchain.cascadeRecalculation();
+
+            nana::msgbox mb(*this, "Success!");
+            mb << "La blockchain ha sido recalculada exitosamente!";
+            mb.show();
+        });
 
         back.create(*this, nana::rectangle(325,505, 150, 30));
         back.caption("Volver al menú principal");
