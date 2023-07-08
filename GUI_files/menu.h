@@ -52,22 +52,26 @@ private:
     nana::button erase;
     nana::button recalculate;
     nana::button back;
-
+    /// Para ver la blockchain
+    nana::form* bcListWin;
+    nana::listbox bcListLb;
 public:
     bcMenu(){
         see.create(*this, nana::rectangle(325, 305, 150, 30));
         see.caption("Ver blockchain");
         see.events().click([this](){
-            nana::listbox lb(*this, nana::rectangle(10,10,300,200));
+            bcListWin = new nana::form(nana::API::make_center(600,500));
+            bcListWin->caption("BlockChain List");
+            bcListLb.create(*bcListWin, nana::rectangle(0,0,600,500), true);
 
             /// Headers de la lista
-            lb.append_header("i");
-            lb.append_header("BlockHash");
-            lb.append_header("PreviousHash");
-            lb.append_header("Client");
-            lb.append_header("Amount");
-            lb.append_header("Location");
-            lb.append_header("Date");
+            bcListLb.append_header("i");
+            bcListLb.append_header("BlockHash");
+            bcListLb.append_header("PreviousHash");
+            bcListLb.append_header("Client");
+            bcListLb.append_header("Amount");
+            bcListLb.append_header("Location");
+            bcListLb.append_header("Date");
 
             /// Get all blocks for GUI
             std::vector<Block> blocks = _blockchain.constructGUIBlockVector();
@@ -79,12 +83,37 @@ public:
                 timeinfo = localtime(&_time);
                 std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
 
-                lb.at(0).append({std::to_string(i+1), blocks[i].getBlockhash(), blocks[i].getPrevhash(), blocks[i].getTransaction().getClient(), std::to_string(blocks[i].getTransaction().getAmount()), buffer});
-            };
+                bcListLb.at(0).append({std::to_string(i+1), blocks[i].getBlockhash(), blocks[i].getPrevhash(), blocks[i].getTransaction().getClient(), std::to_string(blocks[i].getTransaction().getAmount()), buffer});
+            }
+
+            bcListWin->show();
         });
 
         add.create(*this, nana::rectangle(325,345, 150, 30));
         add.caption("Añadir transacción");
+        add.events().click([this](){
+            nana::inputbox::text _client("Nombre del cliente");
+            nana::inputbox::real _amount("Cantidad de dinero", 100, 1, 999, 1);
+            nana::inputbox::text _location("Lugar de retiro");
+
+            nana::inputbox inputTransaction(*this, "Ingrese los datos de la transacción", "Añadir transacción");
+
+            inputTransaction.verify([&_client, &_amount, &_location](nana::window handle){
+                if(_client.value().empty() || _amount.value() == 0.0 || _location.value().empty()){
+                    nana::msgbox mb(handle, "Invalid input");
+                    mb << "Ningún campo debe estar vacío, por favor complete los campos";
+                    mb.show();
+                    return false;
+                }
+
+                return true;
+            });
+
+            if(inputTransaction.show_modal(_client, _amount, _location)){
+                Transaction _tr(_client.value(), _location.value(), _amount.value());
+                _blockchain.addTransaction(_tr);
+            }
+        });
 
         modify.create(*this, nana::rectangle(325,385, 150, 30));
         modify.caption("Modificar bloque");
