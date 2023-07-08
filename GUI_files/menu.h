@@ -16,10 +16,12 @@ private:
     nana::label header;
     nana::label foot;
 
-public:
-    BlockChain _blockchain;
+protected:
+    BlockChain& _blockchain;
 
-    GUI() : nana::form(nana::API::make_center(800,600), appear::decorate<appear::taskbar>() ){
+public:
+
+    GUI(BlockChain& bc) : nana::form(nana::API::make_center(800,600), appear::decorate<appear::taskbar>()), _blockchain(bc){
         this->caption(("Blockchain APP"));
 
         header.create(*this, nana::rectangle(0, 0, 800, 50));
@@ -41,7 +43,7 @@ public:
     }
 };
 
-void backToMenu(); /// Forward declarator
+void backToMenu(BlockChain& bc); /// Forward declarator
 
 /// Ventana del menu de la blockchain
 class bcMenu : public GUI {
@@ -55,14 +57,16 @@ private:
     /// Para ver la blockchain
     nana::form* bcListWin;
     nana::listbox bcListLb;
+    nana::button bcListClose;
 public:
-    bcMenu(){
+    bcMenu(BlockChain& _bc) : GUI(_bc){
         see.create(*this, nana::rectangle(325, 305, 150, 30));
         see.caption("Ver blockchain");
         see.events().click([this](){
-            bcListWin = new nana::form(nana::API::make_center(600,500));
+            bcListWin = new nana::form(nana::API::make_center(800,600));
             bcListWin->caption("BlockChain List");
-            bcListLb.create(*bcListWin, nana::rectangle(0,0,600,500), true);
+
+            bcListLb.create(*bcListWin, nana::rectangle(40,40,600,400));
 
             /// Headers de la lista
             bcListLb.append_header("i");
@@ -85,6 +89,14 @@ public:
 
                 bcListLb.at(0).append({std::to_string(i+1), blocks[i].getBlockhash(), blocks[i].getPrevhash(), blocks[i].getTransaction().getClient(), std::to_string(blocks[i].getTransaction().getAmount()), blocks[i].getTransaction().getLocation(), buffer});
             }
+
+            /// Para cerrar la vista correctamente
+            bcListClose.create(*bcListWin, nana::rectangle(0,0, 30, 30));
+            bcListClose.caption("Cerrar");
+            bcListClose.events().click([this](){
+                bcListLb.close();
+                bcListWin->close();
+            });
 
             bcListWin->show();
         });
@@ -192,8 +204,8 @@ public:
         back.create(*this, nana::rectangle(325,505, 150, 30));
         back.caption("Volver al menú principal");
         back.events().click([&](){
-            this->hide();
-            backToMenu();
+            this->close();
+            backToMenu(_blockchain);
         });
     }
 };
@@ -210,7 +222,7 @@ private:
     nana::button back;
 
 public:
-    searchMenu(){
+    searchMenu(BlockChain& bc) : GUI(bc){
         direct.create(*this, nana::rectangle(325, 265, 150, 30));
         direct.caption("Búsqueda directa");
 
@@ -232,8 +244,8 @@ public:
         back.create(*this, nana::rectangle(325,505, 150, 30));
         back.caption("Volver al menú principal");
         back.events().click([&](){
-            this->hide();
-            backToMenu();
+            this->close();
+            backToMenu(_blockchain);
         });
     }
 };
@@ -248,7 +260,7 @@ private:
     nana::button back;
 
 public:
-    calculationsMenu(){
+    calculationsMenu(BlockChain& bc): GUI(bc){
         moneyOfClient.create(*this, nana::rectangle(325, 305, 150, 30));
         moneyOfClient.caption("Dinero recaudado por cliente");
 
@@ -264,8 +276,8 @@ public:
         back.create(*this, nana::rectangle(325,465, 150, 30));
         back.caption("Volver al menú principal");
         back.events().click([&](){
-            this->hide();
-            backToMenu();
+            this->close();
+            backToMenu(_blockchain);
         });
     }
 };
@@ -280,12 +292,12 @@ private:
     nana::button quit;
 
 public:
-    mainMenu(){
+    mainMenu(BlockChain& bc) : GUI(bc){
         blockchain.create(*this, nana::rectangle(325, 305, 150, 30));
         blockchain.caption("Mi Blockchain");
         blockchain.events().click([&](){
-            this->hide();
-            bcMenu().open();
+            this->close();
+            bcMenu(_blockchain).open();
         });
 
         loadcsv.create(*this, nana::rectangle(325,345, 150, 30));
@@ -306,23 +318,26 @@ public:
             });
 
             if(filePath.show_modal(path)){
-                auto route = path.value();
-                _blockchain.loadFromCSV(route);
+                _blockchain.loadFromCSV(path.value());
+
+                nana::msgbox mb(*this, "Success!");
+                mb << "El CSV ha sido cargado exitosamente!";
+                mb.show();
             }
         });
 
         search.create(*this, nana::rectangle(325,385, 150, 30));
         search.caption("Criterios de búsqueda");
         search.events().click([&](){
-            this->hide();
-            searchMenu().open();
+            this->close();
+            searchMenu(_blockchain).open();
         });
 
         calculations.create(*this, nana::rectangle(325,425, 150, 30));
         calculations.caption("Cálculos Transaccionales");
         calculations.events().click([&](){
-            this->hide();
-            calculationsMenu().open();
+            this->close();
+            calculationsMenu(_blockchain).open();
         });
 
         quit.create(*this, nana::rectangle(325,465, 150, 30));
@@ -332,10 +347,8 @@ public:
 };
 
 /// Hack para volver al menu
-void backToMenu(){
-    mainMenu().open();
+void backToMenu(BlockChain& bc){
+    mainMenu(bc).open();
 }
-
-
 
 #endif //MENU_H

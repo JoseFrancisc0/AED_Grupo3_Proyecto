@@ -2,5 +2,6 @@
 using namespace std;
 
 int main() {
-    mainMenu().open();
+    BlockChain BC;
+    mainMenu(BC).open();
 }
