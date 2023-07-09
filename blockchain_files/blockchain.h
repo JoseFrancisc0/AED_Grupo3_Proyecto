@@ -118,8 +118,6 @@ class BlockChain {
                 Block newBlock(_transaction, "");
                 Node *newNode = new Node(newBlock);
                 head = newNode;
-
-                table.insert(newBlock.getBlockhash(), _transaction); /// Actualiza tabla hash
             }
             else { /// Insertar bloque al final
                 Node *temp = head;
