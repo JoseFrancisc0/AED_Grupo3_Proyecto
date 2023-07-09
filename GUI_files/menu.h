@@ -94,7 +94,7 @@ public:
             bcListClose.create(*bcListWin, nana::rectangle(0,0, 30, 30));
             bcListClose.caption("Cerrar");
             bcListClose.events().click([this](){
-                bcListLb.close();
+                bcListLb.clear();
                 bcListWin->close();
             });
 

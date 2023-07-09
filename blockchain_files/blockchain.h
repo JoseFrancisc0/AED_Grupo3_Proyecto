@@ -398,6 +398,7 @@ class BlockChain {
         }
 
         vector<Block> constructGUIBlockVector(){
+            forGUI.clear();
             Node* current = head;
             while(current != nullptr) {
                 forGUI.push_back(current->block);
