@@ -221,19 +221,89 @@ private:
     nana::button min;
     nana::button back;
 
+    /// Para los resultados de las busquedas
+    nana::form* searchResults;
+    nana::listbox searchLb;
+    nana::button closeSearchs;
+
 public:
     searchMenu(BlockChain& bc) : GUI(bc){
         direct.create(*this, nana::rectangle(325, 265, 150, 30));
         direct.caption("Búsqueda directa");
+        direct.events().click([this](){
+            nana::inputbox::text hash("Hash del bloque");
+            nana::inputbox directSearch(*this, "Ingrese el hash del bloque", "Búsqueda directa");
+
+            directSearch.verify([&hash](nana::window handle){
+                if(hash.value().empty()){
+                    nana::msgbox mb(handle, "Invalid input");
+                    mb << "Por favor complete el campo requerido.";
+                    mb.show();
+
+                    return false;
+                }
+
+                return true;
+            });
+        });
 
         range.create(*this, nana::rectangle(325,305, 150, 30));
         range.caption("Búsqueda por rango");
+        range.events().click([this](){
+            nana::inputbox::text begin("Hash inicial", "000000000000000000000000000000000000000000000000");
+            nana::inputbox::text end("Hash final", "ffffffffffffffffffffffffffffffffffffffffffffffff");
+            nana::inputbox rangeSearch(*this, "Ingrese el hash del bloque", "Búsqueda por rango");
+
+            rangeSearch.verify([&begin, &end](nana::window handle){
+                if(begin.value().empty() || end.value().empty()){
+                    nana::msgbox mb(handle, "Invalid input");
+                    mb << "Por favor complete los campos requeridos.";
+                    mb.show();
+
+                    return false;
+                }
+
+                return true;
+            });
+        });
 
         prefix.create(*this, nana::rectangle(325,345, 150, 30));
         prefix.caption("Búsqueda por prefijo");
+        prefix.events().click([this](){
+            nana::inputbox::text prefixStr("Hash del bloque", "0000");
+            nana::inputbox prefixSearch(*this, "Ingrese el prefijo del hash", "Búsqueda por prefijo");
+
+            prefixSearch.verify([&prefixStr](nana::window handle){
+                if(prefixStr.value().empty()){
+                    nana::msgbox mb(handle, "Invalid input");
+                    mb << "Por favor complete el campo requerido.";
+                    mb.show();
+
+                    return false;
+                }
+
+                return true;
+            });
+        });
 
         pattern.create(*this, nana::rectangle(325,385, 150, 30));
         pattern.caption("Búsqueda por patrón");
+        pattern.events().click([this](){
+            nana::inputbox::text patternStr("Patrón del hash", "0000");
+            nana::inputbox patternSearch(*this, "Ingrese el patrón del hash", "Búsqueda por patrón");
+
+            patternSearch.verify([&patternStr](nana::window handle){
+                if(patternStr.value().empty()){
+                    nana::msgbox mb(handle, "Invalid input");
+                    mb << "Por favor complete el campo requerido.";
+                    mb.show();
+
+                    return false;
+                }
+
+                return true;
+            });
+        });
 
         max.create(*this, nana::rectangle(325,425, 150, 30));
         max.caption("Máximo valor (de hash)");
