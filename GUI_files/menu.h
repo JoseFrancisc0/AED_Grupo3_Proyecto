@@ -20,7 +20,6 @@ protected:
     BlockChain& _blockchain;
 
 public:
-
     GUI(BlockChain& bc) : nana::form(nana::API::make_center(800,600), appear::decorate<appear::taskbar>()), _blockchain(bc){
         this->caption(("Blockchain APP"));
 
@@ -79,6 +78,13 @@ public:
 
             /// Get all blocks for GUI
             std::vector<Block> blocks = _blockchain.constructGUIBlockVector();
+
+            /// Imprimir en la consola para copiar hashes
+            for(auto block : blocks){
+                block.printBlock();
+                std::cout << '\n';
+            }
+
             for(int i=0; i<blocks.size(); i++){
                 auto _time = blocks[i].getTransaction().getDate();
                 /// Para el tiempo
@@ -246,6 +252,43 @@ public:
 
                 return true;
             });
+
+            if(directSearch.show_modal(hash)){
+                searchResults = new nana::form(nana::API::make_center(600,280));
+                searchResults->caption("Resultados de la búsqueda");
+
+                searchLb.create(*searchResults, nana::rectangle(0,0, 600, 240));
+
+                /// Headers de la lista
+                searchLb.append_header("i", 20);
+                searchLb.append_header("Client");
+                searchLb.append_header("Location");
+                searchLb.append_header("Amount");
+                searchLb.append_header("Date");
+
+                /// Realizar la búsqueda
+                auto result = _blockchain.search(hash.value());
+
+                /// Convertir time_t a fecha leible
+                auto _date = result.getDate();
+                char buffer[80];
+                struct tm* timeinfo;
+                timeinfo = localtime(&_date);
+                std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
+
+                searchLb.at(0).append({"1", result.getClient(), result.getLocation(), std::to_string(result.getAmount()), buffer});
+
+                /// Para cerrar la vista correctamente
+                closeSearchs.create(*searchResults, nana::rectangle(525,245, 50, 30));
+                closeSearchs.caption("Cerrar");
+                closeSearchs.events().click([this](){
+                    searchLb.clear();
+                    searchLb.clear_headers();
+                    searchResults->close();
+                });
+
+                searchResults->show();
+            }
         });
 
         range.create(*this, nana::rectangle(325,305, 150, 30));
@@ -266,6 +309,45 @@ public:
 
                 return true;
             });
+
+            if(rangeSearch.show_modal(begin, end)){
+                searchResults = new nana::form(nana::API::make_center(600,280));
+                searchResults->caption("Resultados de la búsqueda");
+
+                searchLb.create(*searchResults, nana::rectangle(0,0, 600, 240));
+
+                /// Headers de la lista
+                searchLb.append_header("i", 20);
+                searchLb.append_header("Client");
+                searchLb.append_header("Location");
+                searchLb.append_header("Amount");
+                searchLb.append_header("Date");
+
+                /// Realizar la búsqueda
+                auto results = _blockchain.range_search(begin.value(), end.value());
+
+                for(int i=0; i<results.size(); i++) {
+                    /// Convertir time_t a fecha leible
+                    auto _date = results[i].getDate();
+                    char buffer[80];
+                    struct tm *timeinfo;
+                    timeinfo = localtime(&_date);
+                    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
+
+                    searchLb.at(0).append({std::to_string(i+1), results[i].getClient(), results[i].getLocation(), std::to_string(results[i].getAmount()), buffer});
+                }
+
+                /// Para cerrar la vista correctamente
+                closeSearchs.create(*searchResults, nana::rectangle(525,245, 50, 30));
+                closeSearchs.caption("Cerrar");
+                closeSearchs.events().click([this](){
+                    searchLb.clear();
+                    searchLb.clear_headers();
+                    searchResults->close();
+                });
+
+                searchResults->show();
+            }
         });
 
         prefix.create(*this, nana::rectangle(325,345, 150, 30));
@@ -285,6 +367,45 @@ public:
 
                 return true;
             });
+
+            if(prefixSearch.show_modal(prefixStr)){
+                searchResults = new nana::form(nana::API::make_center(600,280));
+                searchResults->caption("Resultados de la búsqueda");
+
+                searchLb.create(*searchResults, nana::rectangle(0,0, 600, 240));
+
+                /// Headers de la lista
+                searchLb.append_header("i", 20);
+                searchLb.append_header("Client");
+                searchLb.append_header("Location");
+                searchLb.append_header("Amount");
+                searchLb.append_header("Date");
+
+                /// Realizar la búsqueda
+                auto results = _blockchain.starts_with(prefixStr.value());
+
+                for(int i=0; i<results.size(); i++) {
+                    /// Convertir time_t a fecha leible
+                    auto _date = results[i].getDate();
+                    char buffer[80];
+                    struct tm *timeinfo;
+                    timeinfo = localtime(&_date);
+                    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
+
+                    searchLb.at(0).append({std::to_string(i+1), results[i].getClient(), results[i].getLocation(), std::to_string(results[i].getAmount()), buffer});
+                }
+
+                /// Para cerrar la vista correctamente
+                closeSearchs.create(*searchResults, nana::rectangle(525,245, 50, 30));
+                closeSearchs.caption("Cerrar");
+                closeSearchs.events().click([this](){
+                    searchLb.clear();
+                    searchLb.clear_headers();
+                    searchResults->close();
+                });
+
+                searchResults->show();
+            }
         });
 
         pattern.create(*this, nana::rectangle(325,385, 150, 30));
@@ -304,13 +425,124 @@ public:
 
                 return true;
             });
+
+            if(patternSearch.show_modal(patternStr)){
+                searchResults = new nana::form(nana::API::make_center(600,280));
+                searchResults->caption("Resultados de la búsqueda");
+
+                searchLb.create(*searchResults, nana::rectangle(0,0, 600, 240));
+
+                /// Headers de la lista
+                searchLb.append_header("i", 20);
+                searchLb.append_header("Client");
+                searchLb.append_header("Location");
+                searchLb.append_header("Amount");
+                searchLb.append_header("Date");
+
+                /// Realizar la búsqueda
+                auto results = _blockchain.contains(patternStr.value());
+
+                for(int i=0; i<results.size(); i++) {
+                    /// Convertir time_t a fecha leible
+                    auto _date = results[i].getDate();
+                    char buffer[80];
+                    struct tm *timeinfo;
+                    timeinfo = localtime(&_date);
+                    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
+
+                    searchLb.at(0).append({std::to_string(i+1), results[i].getClient(), results[i].getLocation(), std::to_string(results[i].getAmount()), buffer});
+                }
+
+                /// Para cerrar la vista correctamente
+                closeSearchs.create(*searchResults, nana::rectangle(525,245, 50, 30));
+                closeSearchs.caption("Cerrar");
+                closeSearchs.events().click([this](){
+                    searchLb.clear();
+                    searchLb.clear_headers();
+                    searchResults->close();
+                });
+
+                searchResults->show();
+            }
         });
 
         max.create(*this, nana::rectangle(325,425, 150, 30));
         max.caption("Máximo valor (de hash)");
+        max.events().click([this](){
+            searchResults = new nana::form(nana::API::make_center(600,280));
+            searchResults->caption("Resultados de la búsqueda");
+
+            searchLb.create(*searchResults, nana::rectangle(0,0, 600, 240));
+
+            /// Headers de la lista
+            searchLb.append_header("i", 20);
+            searchLb.append_header("Client");
+            searchLb.append_header("Location");
+            searchLb.append_header("Amount");
+            searchLb.append_header("Date");
+
+            /// Realizar la búsqueda
+            auto result = _blockchain.max_value();
+
+            /// Convertir time_t a fecha leible
+            auto _date = result.getDate();
+            char buffer[80];
+            struct tm *timeinfo;
+            timeinfo = localtime(&_date);
+            std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
+
+            searchLb.at(0).append({"1", result.getClient(), result.getLocation(), std::to_string(result.getAmount()), buffer});
+
+            /// Para cerrar la vista correctamente
+            closeSearchs.create(*searchResults, nana::rectangle(525,245, 50, 30));
+            closeSearchs.caption("Cerrar");
+            closeSearchs.events().click([this](){
+                searchLb.clear();
+                searchLb.clear_headers();
+                searchResults->close();
+            });
+
+            searchResults->show();
+        });
 
         min.create(*this, nana::rectangle(325,465, 150, 30));
         min.caption("Mínimo valor (de hash)");
+        min.events().click([this](){
+            searchResults = new nana::form(nana::API::make_center(600,280));
+            searchResults->caption("Resultados de la búsqueda");
+
+            searchLb.create(*searchResults, nana::rectangle(0,0, 600, 240));
+
+            /// Headers de la lista
+            searchLb.append_header("i", 20);
+            searchLb.append_header("Client");
+            searchLb.append_header("Location");
+            searchLb.append_header("Amount");
+            searchLb.append_header("Date");
+
+            /// Realizar la búsqueda
+            auto result = _blockchain.min_value();
+
+            /// Convertir time_t a fecha leible
+            auto _date = result.getDate();
+            char buffer[80];
+            struct tm *timeinfo;
+            timeinfo = localtime(&_date);
+            std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
+
+            searchLb.at(0).append({"1", result.getClient(), result.getLocation(), std::to_string(result.getAmount()), buffer});
+
+            /// Para cerrar la vista correctamente
+            closeSearchs.create(*searchResults, nana::rectangle(525,245, 50, 30));
+            closeSearchs.caption("Cerrar");
+            closeSearchs.events().click([this](){
+                searchLb.clear();
+                searchLb.clear_headers();
+                searchResults->close();
+            });
+
+            searchResults->show();
+        });
 
         back.create(*this, nana::rectangle(325,505, 150, 30));
         back.caption("Volver al menú principal");
