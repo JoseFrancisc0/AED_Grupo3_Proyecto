@@ -2,12 +2,14 @@
 #define MENU_H
 
 #include "../blockchain_files/blockchain.h"
+#include <filesystem>
 #include <string>
 #include <vector>
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/label.hpp>
-#include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/listbox.hpp>
+#include <nana/gui/widgets/button.hpp>
+#include <nana/gui/widgets/picture.hpp>
 
 /// Aspecto básico de todas las ventanas
 class GUI : public nana::form{
@@ -15,6 +17,7 @@ private:
     nana::label title;
     nana::label header;
     nana::label foot;
+    nana::picture pic;
 
 protected:
     BlockChain& _blockchain;
@@ -31,6 +34,18 @@ public:
         title.caption("<size = 25 red font=\"Consolas\"> BlockChain App");
         title.text_align(nana::align::center, nana::align_v::center);
         title.bgcolor(nana::colors::aquamarine);
+
+        pic.create(*this);
+        /// Encontrar la imagen
+        std::filesystem::path currentPath = std::filesystem::current_path();
+        std::string buildDir = "cmake-build-debug"; /// For Clion
+        std::size_t pos = currentPath.string().find(buildDir);
+        std::string projectDir = currentPath.string().substr(0, pos);
+
+        pic.load( nana::paint::image(projectDir+"\\GUI_files\\image.bmp"));
+
+        nana::rectangle picRect(175, 55, 500, 200);
+        pic.move(picRect);
 
         foot.create(*this, nana::rectangle(0, 550, 800, 50));
         foot.bgcolor(nana::colors::dark_blue);
