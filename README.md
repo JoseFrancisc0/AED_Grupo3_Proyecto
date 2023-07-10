@@ -46,12 +46,15 @@ imagen: https://repositorio.cepal.org/bitstream/handle/11362/47165/1/S2100364_en
 
 
 ### Estructuras de datos utilizadas
-- Tablas Hash: 
-- AVL Tree: 
+- Tablas Hash: una tabla hash, también conocida como mapa hash o diccionario hash, es una estructura de datos que permite almacenar y recuperar información de manera eficiente. Se basa en una función hash, que toma una entrada (como una clave) y la convierte en un valor numérico único. Este valor se utiliza como índice para acceder a una posición específica en la tabla, donde se guarda el dato correspondiente.
+- AVL Tree: Estructura de datos basada en un árbol binario de búsqueda que mantiene su altura balanceada automáticamente. La altura balanceada significa que la diferencia entre las alturas de los subárboles izquierdo y derecho de cualquier nodo en el árbol no puede ser mayor que 1. Para mantener el equilibrio, los árboles AVL utilizan rotaciones, que son operaciones de reestructuración del árbol para ajustar las alturas de los subárboles. Cuando se inserta o elimina un nodo y el árbol se desequilibra, se realizan rotaciones para restaurar el equilibrio. Las rotaciones pueden ser simples (izquierda o derecha) o dobles (combinaciones de rotaciones simples).
+- Min-max Heap: Un Min Heap es una estructura de datos basada en un árbol que mantiene la propiedad de que cada nodo es menor o igual que sus hijos. En otras palabras, el elemento mínimo se encuentra en la raíz del árbol. Por otro lado, en el Max heap, el elemento máximo se encuentra en la raíz del árbol.
+- Suffix Tree: Estructura de datos utilizada para almacenar información sobre todos los sufijos de una cadena dada. Un sufijo es una subcadena que comienza en una posición determinada hasta el final de la cadena.
+- Trie: Estructura de datos especializada en almacenar y buscar palabras o cadenas de texto. En un Trie, cada nodo representa un carácter de la palabra o cadena. Los nodos están interconectados de manera que los prefijos comunes comparten caminos en el árbol. Cada nodo puede tener cero o más hijos, y la estructura del Trie se construye de manera que la concatenación de los caracteres a lo largo de cualquier ruta desde la raíz hasta un nodo hoja representa una palabra completa.
 
 
 ### Proof of work
-
+ El "proof of work" (prueba de trabajo) es un mecanismo utilizado para asegurar la validez y la integridad de la cadena de bloques (blockchain) y para confirmar transacciones. En el caso propuesto, se busca un hash que comience con cuatro ceros consecutivos. La dificultad de este problema radica en que no hay una forma eficiente de resolverlo más que probando diferentes valores hasta encontrar uno que cumpla con el requisito. A medida que aumenta la dificultad, se requiere más poder computacional y tiempo para encontrar un nonce válido.
 
 ## Indexacion de bloques
 
