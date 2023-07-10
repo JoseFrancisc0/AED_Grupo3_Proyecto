@@ -564,19 +564,87 @@ private:
 
 public:
     calculationsMenu(BlockChain& bc): GUI(bc){
-        moneyOfClient.create(*this, nana::rectangle(325, 305, 150, 30));
+        moneyOfClient.create(*this, nana::rectangle(300, 305, 175, 30));
         moneyOfClient.caption("Dinero recaudado por cliente");
+        moneyOfClient.events().click([this](){
+            nana::inputbox::text client("Nombre del cliente");
+            nana::inputbox calculation(*this, "Ingrese el nombre del cliente", "Dinero por cliente");
 
-        moneyOfPlace.create(*this, nana::rectangle(325,345, 150, 30));
+            calculation.verify([&client](nana::window handle){
+                if(client.value().empty()){
+                    nana::msgbox mb(handle, "Invalid input");
+                    mb << "Por favor complete el campo requerido";
+                    mb.show();
+
+                    return false;
+                }
+
+                return true;
+            });
+
+            if(calculation.show_modal(client)){
+                auto result = _blockchain.calculateAmountPerClient(client.value());
+
+                nana::msgbox displayResult(*this, "Resultado");
+                displayResult << "El cliente que ha buscado se llama: " << client.value() << '\n';
+                displayResult << "Dicho cliente ha recaudado: " << std::to_string(result) << " soles";
+
+                displayResult.show();
+            }
+        });
+
+        moneyOfPlace.create(*this, nana::rectangle(300,345, 175, 30));
         moneyOfPlace.caption("Dinero movido en lugar");
+        moneyOfPlace.events().click([this](){
+            nana::inputbox::text location("Nombre del cliente");
+            nana::inputbox calculation(*this, "Ingrese el nombre del lugar", "Dinero por cliente");
 
-        richestClient.create(*this, nana::rectangle(325,385, 150, 30));
+            calculation.verify([&location](nana::window handle){
+                if(location.value().empty()){
+                    nana::msgbox mb(handle, "Invalid input");
+                    mb << "Por favor complete el campo requerido";
+                    mb.show();
+
+                    return false;
+                }
+
+                return true;
+            });
+
+            if(calculation.show_modal(location)){
+                auto result = _blockchain.calculateAmountPerLocation(location.value());
+
+                nana::msgbox displayResult(*this, "Resultado");
+                displayResult << "El lugar que ha buscado está en: " << location.value() << '\n';
+                displayResult << "Dicho lugar ha movido: " << std::to_string(result) << " soles";
+
+                displayResult.show();
+            }
+        });
+
+        richestClient.create(*this, nana::rectangle(287,385, 200, 30));
         richestClient.caption("Cliente con más dinero recaudado");
+        richestClient.events().click([this](){
+            auto result = _blockchain.getRichestClient();
 
-        richestLocation.create(*this, nana::rectangle(325,425, 150, 30));
+            nana::msgbox displayResult(*this, "Resultado");
+            displayResult << "El cliente más rico es: " << result;
+
+            displayResult.show();
+        });
+
+        richestLocation.create(*this, nana::rectangle(300,425, 175, 30));
         richestLocation.caption("Lugar con más dinero movido");
+        richestLocation.events().click([this](){
+            auto result = _blockchain.getRichestLocation();
 
-        back.create(*this, nana::rectangle(325,465, 150, 30));
+            nana::msgbox displayResult(*this, "Resultado");
+            displayResult << "El lugar donde han movido más dinero es: " << result;
+
+            displayResult.show();
+        });
+
+        back.create(*this, nana::rectangle(300,465, 175, 30));
         back.caption("Volver al menú principal");
         back.events().click([&](){
             this->close();
