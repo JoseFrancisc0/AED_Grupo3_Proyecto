@@ -24,7 +24,7 @@ protected:
 
 public:
     GUI(BlockChain& bc) : nana::form(nana::API::make_center(800,600), appear::decorate<appear::taskbar>()), _blockchain(bc){
-        this->caption(("Blockchain APP"));
+        this->caption(("Blockchain App"));
 
         header.create(*this, nana::rectangle(0, 0, 800, 50));
         header.bgcolor(nana::colors::dark_blue);
