@@ -258,8 +258,8 @@ class BlockChain {
 
             /// Mapeando los clientes
             while(current != nullptr) {
-                const Transaction& tr = current->block.getTransaction();
-                if(tr.getAmount() < 0){
+                Transaction tr = current->block.getTransaction();
+                if(tr.getAmount() > 0.0){
                     string client = tr.getClient();
                     double amount = tr.getAmount();
                     clientList[client] += amount;
@@ -272,7 +272,7 @@ class BlockChain {
             string richest;
             double maxAmount = 0.0;
 
-            for(const auto& entry : clientList){
+            for(auto entry : clientList){
                 if(entry.second > maxAmount){
                     richest = entry.first;
                     maxAmount = entry.second;
@@ -289,8 +289,8 @@ class BlockChain {
 
             /// Mapeando los clientes
             while(current != nullptr) {
-                const Transaction& tr = current->block.getTransaction();
-                if(tr.getAmount() < 0){
+                Transaction tr = current->block.getTransaction();
+                if(tr.getAmount() > 0){
                     string location = tr.getLocation();
                     double amount = tr.getAmount();
                     locationList[location] += amount;
