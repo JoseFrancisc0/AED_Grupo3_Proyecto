@@ -54,7 +54,7 @@ imagen: https://repositorio.cepal.org/bitstream/handle/11362/47165/1/S2100364_en
 
 
 ### Proof of work
- El "proof of work" (prueba de trabajo) es un mecanismo utilizado para asegurar la validez y la integridad de la cadena de bloques (blockchain) y para confirmar transacciones. Es un proceso mediante el cual los participantes de la red compiten entre sí para resolver un problema criptográfico complejo.
+ El "proof of work" (prueba de trabajo) es un mecanismo utilizado para asegurar la validez y la integridad de la cadena de bloques (blockchain) y para confirmar transacciones. En el caso propuesto, se busca un hash que comience con cuatro ceros consecutivos. La dificultad de este problema radica en que no hay una forma eficiente de resolverlo más que probando diferentes valores hasta encontrar uno que cumpla con el requisito. A medida que aumenta la dificultad, se requiere más poder computacional y tiempo para encontrar un nonce válido.
 
 ## Indexacion de bloques
 
