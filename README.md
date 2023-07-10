@@ -47,7 +47,10 @@ imagen: https://repositorio.cepal.org/bitstream/handle/11362/47165/1/S2100364_en
 
 ### Estructuras de datos utilizadas
 - Tablas Hash: 
-- AVL Tree: 
+- AVL Tree:
+- Min-max Heap: 
+- Suffix Tree:
+- Trie:
 
 
 ### Proof of work
