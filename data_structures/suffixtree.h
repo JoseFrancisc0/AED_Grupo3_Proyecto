@@ -22,7 +22,7 @@ class SuffixTree{
         }
 
     public:
-        SuffixTree() : root(nullptr) {};
+        SuffixTree() : root(new STNode()) {};
 
         void insert(string str){
             for (size_t i = 0; i < str.length(); i++) {

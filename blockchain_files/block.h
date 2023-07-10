@@ -43,7 +43,6 @@ class Block{
             string target(4, '0'); /// Difficulty = 4
             blockHash = calculateHash(); /// Reset the hash
 
-
             while(blockHash.substr(0, target.length()) != target){
                 nonce++;
                 blockHash = calculateHash();

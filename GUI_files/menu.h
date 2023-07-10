@@ -99,6 +99,7 @@ public:
                 block.printBlock();
                 std::cout << '\n';
             }
+            std::cout << "===========================================================" << '\n';
 
             for(int i=0; i<blocks.size(); i++){
                 auto _time = blocks[i].getTransaction().getDate();
